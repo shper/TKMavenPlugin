@@ -1,0 +1,62 @@
+apply plugin: 'groovy'
+apply from: 'compat.gradle'
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+
+    implementation 'com.android.tools.build:gradle:3.5.2'
+    implementation 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+}
+
+ext {
+    extVersion = "1.0.0"
+    groupId = "cn.shper.build"
+    artifactId = "zz-plugin"
+}
+
+//apply from: 'maven-publish.gradle'
+//apply from: 'uploadArchives.gradle'
+apply plugin: 'shper-maven'
+shper {
+    maven {
+        groupId = project.groupId
+        artifactId = project.artifactId
+        version = project.extVersion
+
+        repository {
+            url = "./../repo"
+            auth = false
+//            userName = "XXX"
+//            password = "XXX"
+
+//            sourcesJar = false
+//            javadocJar = false
+        }
+
+//        snapshotRepository {
+//            url = './../repo/snapshots'
+//            auth = false
+//            userName = "XXX"
+//            password = "XXX"
+//
+//            sourcesJar = true
+//            javadocJar = true
+//        }
+
+        bintray {
+            repo = "maven"
+            userOrg = "shper"
+            name = "ZZ-Plugins"
+            desc = 'Shper ZZ Plugins for Gradle'
+            websiteUrl = "https://www.shper.cn"
+            vcsUrl = "https://www.shper.cn"
+        }
+
+    }
+}

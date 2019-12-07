@@ -1,0 +1,2 @@
+include ':demo_app', ':plugin', ':gradle_compat', ':demo_app_lib', ':demo_java_lib'
+rootProject.name='ZZGradlePlugins'

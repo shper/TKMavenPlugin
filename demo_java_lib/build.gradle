@@ -1,0 +1,45 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
+
+ext {
+    extVersion = "1.0.0"
+    groupId = "cn.shper.demo"
+    artifactId = "java_lib"
+}
+
+apply plugin: 'shper-maven'
+shper {
+    maven {
+        groupId = project.groupId
+        artifactId = project.artifactId
+        version = project.extVersion
+
+        repository {
+            url = "./../repo"
+            auth = false
+
+//            userName = "XXX"
+//            password = "XXX"
+
+            sourcesJar = true
+            javadocJar = true
+        }
+
+//        snapshotRepository {
+//            url = './../repo/snapshots'
+//            auth = false
+//
+//            userName = "XXX"
+//            password = "XXX"
+//
+//            sourcesJar = false
+//            javadocJar = false
+//        }
+    }
+}

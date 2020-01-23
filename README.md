@@ -16,7 +16,7 @@ buildscript {
 
     dependencies {
         // Shper Z-maven 编译工具
-        classpath 'cn.shper.plugin:z-maven:1.0.0'
+        classpath 'cn.shper.plugin:z-maven:1.0.1'
     }
 }
 ```

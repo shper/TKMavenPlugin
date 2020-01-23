@@ -1,4 +1,4 @@
-package cn.shper.build.compat.gradle5_3
+package cn.shper.plugin.compat.gradle5_3
 
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.PublishArtifact

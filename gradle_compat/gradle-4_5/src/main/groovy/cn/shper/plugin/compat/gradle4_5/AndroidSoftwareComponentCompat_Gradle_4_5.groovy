@@ -1,4 +1,4 @@
-package cn.shper.build.compat.gradle4_5
+package cn.shper.plugin.compat.gradle4_5
 
 import org.gradle.api.artifacts.*
 import org.gradle.api.attributes.AttributeContainer

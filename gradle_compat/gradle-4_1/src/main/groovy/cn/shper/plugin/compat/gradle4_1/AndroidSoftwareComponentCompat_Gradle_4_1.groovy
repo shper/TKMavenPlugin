@@ -1,4 +1,4 @@
-package cn.shper.build.compat.gradle4_1
+package cn.shper.plugin.compat.gradle4_1
 
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.DependencySet

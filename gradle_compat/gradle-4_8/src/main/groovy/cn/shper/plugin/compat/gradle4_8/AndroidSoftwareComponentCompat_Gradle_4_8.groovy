@@ -1,4 +1,4 @@
-package cn.shper.build.compat.gradle4_8
+package cn.shper.plugin.compat.gradle4_8
 
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.*

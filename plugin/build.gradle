@@ -12,51 +12,48 @@ dependencies {
 
     implementation 'com.android.tools.build:gradle:3.5.2'
     implementation 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+
+    implementation 'cn.shper.plugin:core:1.0.1'
 }
 
 ext {
     extVersion = "1.0.0"
-    groupId = "cn.shper.build"
-    artifactId = "zz-plugin"
+    groupId = "cn.shper.plugin"
+    artifactId = "z-maven"
 }
 
-//apply from: 'maven-publish.gradle'
-//apply from: 'uploadArchives.gradle'
-apply plugin: 'shper-maven'
-shper {
-    maven {
-        groupId = project.groupId
-        artifactId = project.artifactId
-        version = project.extVersion
-
-        repository {
-            url = "./../repo"
-            auth = false
-//            userName = "XXX"
-//            password = "XXX"
-
-//            sourcesJar = false
-//            javadocJar = false
-        }
-
-//        snapshotRepository {
-//            url = './../repo/snapshots'
-//            auth = false
-//            userName = "XXX"
-//            password = "XXX"
+apply from: 'uploadArchives.gradle'
+//apply plugin: 'z-maven'
+//zmaven {
+//    groupId = project.groupId
+//    artifactId = project.artifactId
+//    version = project.extVersion
 //
-//            sourcesJar = true
-//            javadocJar = true
-//        }
-
-        bintray {
-            repo = "maven"
-            userOrg = "shper"
-            name = "ZZ-Plugins"
-            desc = 'Shper ZZ Plugins for Gradle'
-            websiteUrl = "https://www.shper.cn"
-            vcsUrl = "https://www.shper.cn"
-        }
-
-    }
-}
+//    repository {
+//        url = "./../repo"
+//        auth = false
+////        userName = "XXX"
+////        password = "XXX"
+////
+////        sourcesJar = false
+////        javadocJar = false
+//    }
+//
+////    snapshotRepository {
+////        url = './../repo/'
+////        auth = false
+////
+////        sourcesJar = true
+////        javadocJar = true
+////    }
+//
+//    bintray {
+//        repo = "maven"
+//        userOrg = "shper"
+//        name = "Z-Maven"
+//        desc = 'Shper Z Maven for Gradle'
+//        websiteUrl = "https://www.shper.cn"
+//        vcsUrl = "https://github.com/shper/ZMavenPlugin"
+//    }
+//
+//}

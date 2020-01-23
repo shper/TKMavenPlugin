@@ -1,14 +1,14 @@
-package cn.shper.build.maven.config
+package cn.shper.plugin.maven.config
 
-import cn.shper.build.core.model.MavenExtension
-import cn.shper.build.core.util.StringUtils
+import cn.shper.plugin.core.util.StringUtils
+import cn.shper.plugin.maven.model.ZMavenExtension
 import org.gradle.api.Project
 
 class BintrayConfiguration {
 
     static void configure(Project project,
                           Properties local,
-                          MavenExtension extension) {
+                          ZMavenExtension extension) {
 
         def bintrayExtension = extension.bintray
 
@@ -17,12 +17,12 @@ class BintrayConfiguration {
             user = project.hasProperty("user")
                     ? project.property("user")
                     : (StringUtils.isNotNullAndNotEmpty(bintrayExtension.user) ?
-                    bintrayExtension.user : local.getProperty("shper.maven.bintray.user"))
+                    bintrayExtension.user : local.getProperty("z-maven.bintray.user"))
 
             key = project.hasProperty("apiKey")
                     ? project.property("apiKey")
                     : (StringUtils.isNotNullAndNotEmpty(bintrayExtension.apiKey) ?
-                    bintrayExtension.apiKey : local.getProperty("shper.maven.bintray.apiKey"))
+                    bintrayExtension.apiKey : local.getProperty("z-maven.bintray.apiKey"))
 
             publish = bintrayExtension.publish
             dryRun = bintrayExtension.dryRun

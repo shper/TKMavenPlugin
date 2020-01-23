@@ -5,7 +5,8 @@ uploadArchives {
         mavenDeployer {
             pom.groupId = project.groupId
             pom.artifactId = project.artifactId
-            pom.version = project.extVersion
+            pom.version = project.extVersion + '-SNAPSHOT' +
+                    ''
 
             repository(url: uri('./../repo'))
         }

@@ -1,6 +1,6 @@
-package cn.shper.build.core.model
+package cn.shper.plugin.maven.model
 
-import cn.shper.build.core.util.StringUtils
+import cn.shper.plugin.core.util.StringUtils
 import org.gradle.api.Action
 import org.gradle.internal.reflect.Instantiator
 
@@ -8,31 +8,31 @@ import org.gradle.internal.reflect.Instantiator
  * Author: shper
  * Version: V0.1 2019-07-10
  */
-class MavenExtension {
+class ZMavenExtension {
 
     String groupId
     String artifactId
     String version
 
-    MavenRepositoryExtension repository
-    MavenRepositoryExtension snapshotRepository
-    MavenBintrayExtension bintray
+    ZMavenRepositoryExtension repository
+    ZMavenRepositoryExtension snapshotRepository
+    ZMavenBintrayExtension bintray
 
-    MavenExtension(Instantiator instantiator) {
-        repository = instantiator.newInstance(MavenRepositoryExtension.class)
-        snapshotRepository = instantiator.newInstance(MavenRepositoryExtension.class)
-        bintray = instantiator.newInstance(MavenBintrayExtension.class)
+    ZMavenExtension(Instantiator instantiator) {
+        repository = instantiator.newInstance(ZMavenRepositoryExtension.class)
+        snapshotRepository = instantiator.newInstance(ZMavenRepositoryExtension.class)
+        bintray = instantiator.newInstance(ZMavenBintrayExtension.class)
     }
 
-    void repository(Action<MavenRepositoryExtension> action) {
+    void repository(Action<ZMavenRepositoryExtension> action) {
         action.execute(repository)
     }
 
-    void snapshotRepository(Action<MavenRepositoryExtension> action) {
+    void snapshotRepository(Action<ZMavenRepositoryExtension> action) {
         action.execute(snapshotRepository)
     }
 
-    void bintray(Action<MavenBintrayExtension> action) {
+    void bintray(Action<ZMavenBintrayExtension> action) {
         action.execute(bintray)
     }
 
@@ -57,7 +57,7 @@ class MavenExtension {
         }
 
         if (extensionError) {
-            String prefix = "Have you created the Shper maven? "
+            String prefix = "Have you created the ZMaven? "
             throw new IllegalStateException(prefix + extensionError)
         }
     }

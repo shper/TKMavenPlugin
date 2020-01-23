@@ -1,4 +1,4 @@
-package cn.shper.build.core.model.ability
+package cn.shper.plugin.maven.model.ability
 
 abstract class Artifactable {
 

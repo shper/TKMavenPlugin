@@ -1,6 +1,6 @@
-package cn.shper.build.maven.attachment
+package cn.shper.plugin.maven.attachment
 
-import cn.shper.build.core.util.CollectionUtils
+import cn.shper.plugin.core.util.CollectionUtils
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.component.SoftwareComponent

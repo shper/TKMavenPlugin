@@ -1,13 +1,13 @@
-package cn.shper.build.maven
+package cn.shper.plugin.maven
 
-import cn.shper.build.core.base.BasePlugin
-import cn.shper.build.maven.attachment.AndroidAttachments
-import cn.shper.build.maven.attachment.JavaAttachments
-import cn.shper.build.maven.config.BintrayConfiguration
-import cn.shper.build.core.util.StringUtils
-import cn.shper.build.core.model.MavenExtension
-import cn.shper.build.core.model.MavenRepositoryExtension
-import cn.shper.build.core.model.ability.Artifactable
+import cn.shper.plugin.core.util.StringUtils
+import cn.shper.plugin.core.base.BasePlugin
+import cn.shper.plugin.maven.attachment.AndroidAttachments
+import cn.shper.plugin.maven.attachment.JavaAttachments
+import cn.shper.plugin.maven.config.BintrayConfiguration
+import cn.shper.plugin.maven.model.ZMavenExtension
+import cn.shper.plugin.maven.model.ZMavenRepositoryExtension
+import cn.shper.plugin.maven.model.ability.Artifactable
 import com.android.build.gradle.api.LibraryVariant
 import com.jfrog.bintray.gradle.BintrayPlugin
 import org.gradle.api.Project
@@ -20,25 +20,26 @@ import org.gradle.api.publish.maven.MavenPublication
  * Author: shper
  * Version: V0.1 2019-07-10
  */
-class MavenPlugin extends BasePlugin {
+class ZMavenPlugin extends BasePlugin {
 
     private Properties local
+    private ZMavenExtension zMavenExtension
 
     @Override
     void subApply(Project project) {
-        def mavenExtension = shperExtension.getMaven()
-        if (mavenExtension == null) {
-            return
+        this.zMavenExtension = project.extensions.findByName("zmaven")
+        if (!zMavenExtension) {
+            this.zMavenExtension = project.extensions.create("zmaven", ZMavenExtension.class, instantiator)
         }
 
         createLocalProperties()
 
         project.afterEvaluate {
-            mavenExtension.validate()
+            zMavenExtension.validate()
 
-            createPublishing(mavenExtension)
+            createPublishing(zMavenExtension)
 
-            createBintrayPublishing(mavenExtension)
+            createBintrayPublishing(zMavenExtension)
         }
 
         project.apply([plugin: 'maven-publish'])
@@ -53,7 +54,7 @@ class MavenPlugin extends BasePlugin {
         }
     }
 
-    private void createPublishing(MavenExtension mavenExtension) {
+    private void createPublishing(ZMavenExtension mavenExtension) {
         project.publishing {
         }
 
@@ -68,7 +69,7 @@ class MavenPlugin extends BasePlugin {
         }
     }
 
-    private void createBintrayPublishing(MavenExtension mavenExtension) {
+    private void createBintrayPublishing(ZMavenExtension mavenExtension) {
         if (!mavenExtension.bintray || !mavenExtension.bintray.validate()) {
             return
         }
@@ -76,48 +77,45 @@ class MavenPlugin extends BasePlugin {
         BintrayConfiguration.configure(project, local, mavenExtension)
         attachArtifacts(mavenExtension, mavenExtension.bintray, "bintray", false)
 
-        createShperPublishTask("bintrayPublish", project.tasks.bintrayUpload)
+        createShperPublishTask("publishBintray", project.tasks.bintrayUpload)
     }
 
-    private void attachArtifacts(MavenExtension mavenExtension,
+    private void attachArtifacts(ZMavenExtension mavenExtension,
                                  Artifactable anInterface,
                                  String namePrefix,
                                  boolean isSnapshot) {
 
-        project.plugins.withId('com.android.library') {
+        project.plugins.withId("com.android.library") {
             project.android.libraryVariants.all { LibraryVariant variant ->
                 String name = namePrefix + StringUtils.toUpperCase(variant.name, 1)
                 MavenPublication publication = createPublication(isSnapshot, name, mavenExtension)
                 new AndroidAttachments(name, project, variant, anInterface).attachTo(publication)
 
-                createShperPublishTaskByName(name)
+                if (!namePrefix.equals("bintray")) {
+                    createShperPublishTaskByName(name)
+                }
             }
         }
 
-        project.plugins.withId('java') {
+        project.plugins.withId("java") {
             MavenPublication publication = createPublication(isSnapshot, namePrefix, mavenExtension)
             new JavaAttachments(namePrefix, project, anInterface).attachTo(publication)
 
-            createShperPublishTaskByName(namePrefix)
+            if (!namePrefix.equals("bintray")) {
+                createShperPublishTaskByName(namePrefix)
+            }
         }
     }
 
     private MavenPublication createPublication(boolean isSnapshot,
                                                String name,
-                                               MavenExtension extension) {
+                                               ZMavenExtension extension) {
 
         String groupId = extension.groupId
         String artifactId = extension.artifactId
 
         String version = extension.version
         if (isSnapshot && !version.endsWith("-SNAPSHOT")) {
-
-            // 三段式版本号直接删除 最后一段应急版本号，修改为通用版本号 .X
-            if (version.split("\\.").length > 2) {
-                version = version.substring(0, version.lastIndexOf("."))
-                version += ".X"
-            }
-
             version += "-SNAPSHOT"
         }
 
@@ -130,7 +128,7 @@ class MavenPlugin extends BasePlugin {
     }
 
     private void createRepository(String alias,
-                                  MavenRepositoryExtension extension) {
+                                  ZMavenRepositoryExtension extension) {
 
         if (StringUtils.isNullOrEmpty(extension.url)) {
             return
@@ -147,13 +145,13 @@ class MavenPlugin extends BasePlugin {
                             ? project.property("userName")
                             : (StringUtils.isNotNullAndNotEmpty(extension.userName)
                             ? extension.userName
-                            : local.getProperty("shper.maven.userName"))
+                            : local.getProperty("z-maven.userName"))
 
                     password = project.hasProperty("password")
                             ? project.property("password")
                             : (StringUtils.isNotNullAndNotEmpty(extension.password)
                             ? extension.password
-                            : local.getProperty("shper.maven.password"))
+                            : local.getProperty("z-maven.password"))
                 }
             }
         }
@@ -166,7 +164,7 @@ class MavenPlugin extends BasePlugin {
 
     private void createShperPublishTask(String name, Object object) {
         project.tasks.create(name) { Task task ->
-            task.setGroup("shper")
+            task.setGroup("ZMaven")
             task.dependsOn(object)
         }
     }

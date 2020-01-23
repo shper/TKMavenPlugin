@@ -1,4 +1,4 @@
-# Shper ZZ-Plugins
+# Shper z-maven
 -------
 
 ## Sample usage
@@ -6,7 +6,7 @@
 
 ### Step 1
 
-Add the Shper ZZ-Plugin to your `buildscript`:
+Add the Shper Z-Plugin to your `buildscript`:
 
 ```
 buildscript {
@@ -15,8 +15,8 @@ buildscript {
     }
 
     dependencies {
-        // Shper ZZ-Plugin 编译工具
-        classpath 'cn.shper.build:zz-plugin:1.0.0'
+        // Shper Z-maven 编译工具
+        classpath 'cn.shper.plugin:z-maven:1.0.0'
     }
 }
 ```
@@ -28,12 +28,12 @@ Add the your username and password to your `local.properties`:
 
 ```
 # Maven's username and password
-shper.maven.userName=XXX
-shper.maven.password=XXX
+z-maven.userName=XXX
+z-maven.password=XXX
 
 # Bintray's user and apikey
-shper.maven.bintray.user=XXX
-shper.maven.bintray.apiKey=XXX
+z-maven.bintray.user=XXX
+z-maven.bintray.apiKey=XXX
 ```
 
 ### Step 3
@@ -41,41 +41,39 @@ shper.maven.bintray.apiKey=XXX
 Add the shper extension to your `build.gradle`:
 
 ```
-apply plugin: 'shper-maven'
-shper {
-    maven {
-        groupId = "cn.shper.build"
-        artifactId = "zz-plugin"
-        version = "1.0.0"
+apply plugin: 'z-maven'
+ZMaven {
+   groupId = "cn.shper.build"
+   artifactId = "z-plugin"
+   version = "1.0.0"
 
-        repository {
-            url = "https://maven.shper.cn/release"
-            userName = "XXX"
-            password = "XXX"
+   repository {
+        url = "https://maven.shper.cn/release"
+        userName = "XXX"
+        password = "XXX"
 
-            sourcesJar = false
-            javadocJar = true
-        }
+        sourcesJar = false
+        javadocJar = true
+   }
 
-        snapshotRepository {
-            url = "https://maven.shper.cn/snapshots"
-            userName = "XXX"
-            password = "XXX"
+   snapshotRepository {
+        url = "https://maven.shper.cn/snapshots"
+        userName = "XXX"
+        password = "XXX"
 
-            sourcesJar = true
-            javadocJar = true
-        }
-
-        bintray {
-            repo = "maven"
-            userOrg = "XXX"
-            name = "ZZ-Plugins"
-            desc = 'Shper ZZ Plugins for Gradle'
-            websiteUrl = "https://www.shper.cn"
-            vcsUrl = "https://www.shper.cn"
-        }
-
+        sourcesJar = true
+        javadocJar = true
     }
+
+    bintray {
+        repo = "maven"
+        userOrg = "XXX"
+        name = "z-Plugin"
+        desc = 'Shper Z Plugin for Gradle'
+        websiteUrl = "https://www.shper.cn"
+        vcsUrl = "https://www.shper.cn"
+    }
+
 }
 ```
 
@@ -83,7 +81,7 @@ shper {
 ## License
 -------
 
-    Copyright 2018 Shper
+    Copyright 2020 Shper
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

@@ -1,4 +1,4 @@
-package cn.shper.plugin.core.utils
+package cn.shper.plugin.core.util
 
 /**
  * Author: shper

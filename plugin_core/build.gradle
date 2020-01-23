@@ -14,46 +14,42 @@ dependencies {
 }
 
 ext {
-    extVersion = "1.0.0"
+    extVersion = "1.0.1"
     groupId = "cn.shper.plugin"
     artifactId = "core"
 }
 
-apply plugin: 'shper-maven'
-shper {
-    maven {
-        groupId = project.groupId
-        artifactId = project.artifactId
-        version = project.extVersion
+apply plugin: 'z-maven'
+zmaven {
+    groupId = project.groupId
+    artifactId = project.artifactId
+    version = project.extVersion
 
-        repository {
-            url = "./../repo"
-            auth = false
+    repository {
+        url = "./../repo"
+        auth = false
 //            userName = "XXX"
 //            password = "XXX"
 
 //            sourcesJar = false
 //            javadocJar = false
-        }
-
-//        snapshotRepository {
-//            url = './../repo/snapshots'
-//            auth = false
-//            userName = "XXX"
-//            password = "XXX"
-//
-//            sourcesJar = true
-//            javadocJar = true
-//        }
-
-        bintray {
-            repo = "maven"
-            userOrg = "shper"
-            name = "Z-Plugin-Core"
-            desc = 'Shper Z Plugin Core for Gradle'
-            websiteUrl = "https://www.shper.cn"
-            vcsUrl = "https://github.com/shper/ZGradlePluguns"
-        }
-
     }
+
+    snapshotRepository {
+        url = './../repo'
+        auth = false
+
+        sourcesJar = true
+        javadocJar = true
+    }
+
+    bintray {
+        repo = "maven"
+        userOrg = "shper"
+        name = "Z-Plugin-Core"
+        desc = 'Shper Z Plugin Core for Gradle'
+        websiteUrl = "https://www.shper.cn"
+        vcsUrl = "https://github.com/shper/ZMavenPlugin"
+    }
+
 }

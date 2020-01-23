@@ -28,11 +28,9 @@ zmaven {
     repository {
         url = "./../repo"
         auth = false
-//            userName = "XXX"
-//            password = "XXX"
 
-//            sourcesJar = false
-//            javadocJar = false
+        sourcesJar = true
+        javadocJar = true
     }
 
     snapshotRepository {

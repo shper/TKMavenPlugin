@@ -1,4 +1,4 @@
-package cn.shper.demo_java_lib;
+package cn.shper.demo.lib;
 
 public class MyClass {
 }

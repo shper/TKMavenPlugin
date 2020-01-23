@@ -7,8 +7,7 @@ buildscript {
         google()
         jcenter()
         maven{ url 'https://dl.bintray.com/shper/maven' }
-        // Test
-        maven{ url './repo/' }
+//        maven{ url './repo/' }
     }
 
     dependencies {
@@ -17,8 +16,8 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 
-        // Shper ZZ-Plugin 编译工具
-        classpath 'cn.shper.build:zz-plugin:1.0.0'
+        // Z-Maven 工具
+        classpath 'cn.shper.plugin:z-maven:1.0.1'
     }
 }
 

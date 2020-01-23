@@ -42,33 +42,26 @@ ext {
     artifactId = "app_lib"
 }
 
-apply plugin: 'shper-maven'
-shper {
-    maven {
-        groupId = project.groupId
-        artifactId = project.artifactId
-        version = project.extVersion
+apply plugin: 'z-maven'
+zmaven {
+    groupId = project.groupId
+    artifactId = project.artifactId
+    version = project.extVersion
 
-        repository {
-            url = "./../repo"
-            auth = false
+    repository {
+        url = "./../repo"
+        auth = false
 
-//            userName = "XXX"
-//            password = "XXX"
-
-            sourcesJar = true
-            javadocJar = true
-        }
-
-        snapshotRepository {
-            url = './../repo/snapshots'
-            auth = false
-
-////            userName = "XXX"
-////            password = "XXX"
-//
-            sourcesJar = false
-            javadocJar = false
-        }
+        sourcesJar = true
+        javadocJar = true
     }
+
+    snapshotRepository {
+        url = './../repo'
+        auth = false
+
+        sourcesJar = false
+        javadocJar = false
+    }
+
 }

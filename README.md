@@ -1,4 +1,4 @@
-# Shper z-maven
+# Shper TK-Maven
 -------
 
 ## Sample usage
@@ -15,8 +15,8 @@ buildscript {
     }
 
     dependencies {
-        // Shper Z-maven 编译工具
-        classpath 'cn.shper.plugin:z-maven:1.0.1'
+        // Shper tk-maven 编译工具
+        classpath 'cn.shper.plugin:tk-maven:1.0.1'
     }
 }
 ```
@@ -28,12 +28,12 @@ Add the your username and password to your `local.properties`:
 
 ```
 # Maven's username and password
-z-maven.userName=XXX
-z-maven.password=XXX
+tk-maven.userName=XXX
+tk-maven.password=XXX
 
 # Bintray's user and apikey
-z-maven.bintray.user=XXX
-z-maven.bintray.apiKey=XXX
+tk-maven.bintray.user=XXX
+tk-maven.bintray.apiKey=XXX
 ```
 
 ### Step 3
@@ -41,10 +41,10 @@ z-maven.bintray.apiKey=XXX
 Add the shper extension to your `build.gradle`:
 
 ```
-apply plugin: 'z-maven'
-ZMaven {
-   groupId = "cn.shper.build"
-   artifactId = "z-plugin"
+apply plugin: 'tk-maven'
+tkmaven {
+   groupId = "cn.shper.plugin"
+   artifactId = "tk-maven"
    version = "1.0.0"
 
    repository {
@@ -68,8 +68,8 @@ ZMaven {
     bintray {
         repo = "maven"
         userOrg = "XXX"
-        name = "z-Plugin"
-        desc = 'Shper Z Plugin for Gradle'
+        name = "TK-Plugin"
+        desc = 'Shper's Plugin for Gradle'
         websiteUrl = "https://www.shper.cn"
         vcsUrl = "https://www.shper.cn"
     }

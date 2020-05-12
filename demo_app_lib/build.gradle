@@ -42,8 +42,8 @@ ext {
     artifactId = "app_lib"
 }
 
-apply plugin: 'z-maven'
-zmaven {
+apply plugin: 'tk-maven'
+tkmaven {
     groupId = project.groupId
     artifactId = project.artifactId
     version = project.extVersion

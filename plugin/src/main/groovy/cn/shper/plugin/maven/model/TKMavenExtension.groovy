@@ -8,31 +8,31 @@ import org.gradle.internal.reflect.Instantiator
  * Author: shper
  * Version: V0.1 2019-07-10
  */
-class ZMavenExtension {
+class TKMavenExtension {
 
     String groupId
     String artifactId
     String version
 
-    ZMavenRepositoryExtension repository
-    ZMavenRepositoryExtension snapshotRepository
-    ZMavenBintrayExtension bintray
+    TKMavenRepositoryExtension repository
+    TKMavenRepositoryExtension snapshotRepository
+    TKMavenBintrayExtension bintray
 
-    ZMavenExtension(Instantiator instantiator) {
-        repository = instantiator.newInstance(ZMavenRepositoryExtension.class)
-        snapshotRepository = instantiator.newInstance(ZMavenRepositoryExtension.class)
-        bintray = instantiator.newInstance(ZMavenBintrayExtension.class)
+    TKMavenExtension(Instantiator instantiator) {
+        repository = instantiator.newInstance(TKMavenRepositoryExtension.class)
+        snapshotRepository = instantiator.newInstance(TKMavenRepositoryExtension.class)
+        bintray = instantiator.newInstance(TKMavenBintrayExtension.class)
     }
 
-    void repository(Action<ZMavenRepositoryExtension> action) {
+    void repository(Action<TKMavenRepositoryExtension> action) {
         action.execute(repository)
     }
 
-    void snapshotRepository(Action<ZMavenRepositoryExtension> action) {
+    void snapshotRepository(Action<TKMavenRepositoryExtension> action) {
         action.execute(snapshotRepository)
     }
 
-    void bintray(Action<ZMavenBintrayExtension> action) {
+    void bintray(Action<TKMavenBintrayExtension> action) {
         action.execute(bintray)
     }
 

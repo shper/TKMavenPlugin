@@ -10,7 +10,7 @@ dependencies {
     implementation gradleApi()
     implementation localGroovy()
 
-    implementation 'com.android.tools.build:gradle:3.5.2'
+    implementation 'com.android.tools.build:gradle:3.5.3'
     implementation 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
 
     implementation 'cn.shper.plugin:core:1.0.1'
@@ -19,12 +19,12 @@ dependencies {
 ext {
     extVersion = "1.0.1"
     groupId = "cn.shper.plugin"
-    artifactId = "z-maven"
+    artifactId = "tk-maven"
 }
 
 //apply from: 'uploadArchives.gradle'
-apply plugin: 'z-maven'
-zmaven {
+apply plugin: 'tk-maven'
+tkmaven {
     groupId = project.groupId
     artifactId = project.artifactId
     version = project.extVersion
@@ -38,7 +38,7 @@ zmaven {
     }
 
     snapshotRepository {
-        url = './../repoß'
+        url = './../repo'
         auth = false
 
         sourcesJar = true
@@ -48,10 +48,10 @@ zmaven {
     bintray {
         repo = "maven"
         userOrg = "shper"
-        name = "Z-Maven"
-        desc = 'Shper Z Maven for Gradle'
+        name = "TK-Maven"
+        desc = 'Shper TK Maven for Gradle'
         websiteUrl = "https://www.shper.cn"
-        vcsUrl = "https://github.com/shper/ZMavenPlugin"
+        vcsUrl = "https://github.com/shper/TKMavenPlugin"
     }
 
 }

@@ -6,7 +6,7 @@ package cn.shper.plugin.core.util
  */
 class Logger {
 
-    private static final String TAG = "ShperBuild"
+    private static final String TAG = "ShperPlugin"
 
     private Logger() {
     }

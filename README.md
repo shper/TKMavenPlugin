@@ -6,7 +6,7 @@
 
 ### Step 1
 
-Add the Shper Z-Plugin to your `buildscript`:
+Add the Shper TK-Maven to your `buildscript`:
 
 ```
 buildscript {
@@ -15,7 +15,7 @@ buildscript {
     }
 
     dependencies {
-        // Shper tk-maven 编译工具
+        // Shper TK-Maven 工具
         classpath 'cn.shper.plugin:tk-maven:1.0.1'
     }
 }

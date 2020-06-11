@@ -10,14 +10,14 @@ dependencies {
     implementation gradleApi()
     implementation localGroovy()
 
-    implementation 'com.android.tools.build:gradle:3.5.3'
+    implementation 'com.android.tools.build:gradle:4.0.0'
     implementation 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
 
     implementation 'cn.shper.plugin:core:1.0.1'
 }
 
 ext {
-    extVersion = "1.0.1"
+    extVersion = "1.1.0"
     groupId = "cn.shper.plugin"
     artifactId = "tk-maven"
 }

@@ -19,6 +19,7 @@ class AndroidAttachments extends MavenAttachments {
     private static final String ANDROID_SOFTWARE_COMPONENT_COMPAT_4_8 = 'cn.shper.plugin.compat.gradle4_8.AndroidSoftwareComponentCompat_Gradle_4_8'
     private static final String ANDROID_SOFTWARE_COMPONENT_COMPAT_5_2 = 'cn.shper.plugin.compat.gradle5_2.AndroidSoftwareComponentCompat_Gradle_5_2'
     private static final String ANDROID_SOFTWARE_COMPONENT_COMPAT_5_3 = 'cn.shper.plugin.compat.gradle5_3.AndroidSoftwareComponentCompat_Gradle_5_3'
+    private static final String ANDROID_SOFTWARE_COMPONENT_COMPAT_6_0 = 'cn.shper.plugin.compat.gradle_6_0.AndroidSoftwareComponentCompat_Gradle_6_0'
 
     AndroidAttachments(String name, Project project, LibraryVariant variant, Artifactable artifactable) {
         super(androidComponentFrom(project))
@@ -36,6 +37,10 @@ class AndroidAttachments extends MavenAttachments {
 
     private static SoftwareComponent androidComponentFrom(Project project) {
         def currentGradleVersion = GradleVersion.current()
+        if (currentGradleVersion >= GradleVersion.version('6.0')) {
+            def clazz = this.classLoader.loadClass(ANDROID_SOFTWARE_COMPONENT_COMPAT_6_0)
+            return project.objects.newInstance(clazz) as SoftwareComponent
+        }
         if (currentGradleVersion >= GradleVersion.version('5.3')) {
             def clazz = this.classLoader.loadClass(ANDROID_SOFTWARE_COMPONENT_COMPAT_5_3)
             return project.objects.newInstance(clazz) as SoftwareComponent

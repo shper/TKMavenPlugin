@@ -23,23 +23,23 @@ import org.gradle.api.publish.maven.MavenPublication
 class TKMavenPlugin extends BasePlugin {
 
     private Properties local
-    private TKMavenExtension zMavenExtension
+    private TKMavenExtension tkMavenExtension
 
     @Override
     void subApply(Project project) {
-        this.zMavenExtension = project.extensions.findByName("tkmaven")
-        if (!zMavenExtension) {
-            this.zMavenExtension = project.extensions.create("tkmaven", TKMavenExtension.class, instantiator)
+        this.tkMavenExtension = project.extensions.findByName("tkmaven")
+        if (!tkMavenExtension) {
+            this.tkMavenExtension = project.extensions.create("tkmaven", TKMavenExtension.class, instantiator)
         }
 
         createLocalProperties()
 
         project.afterEvaluate {
-            zMavenExtension.validate()
+            tkMavenExtension.validate()
 
-            createPublishing(zMavenExtension)
+            createPublishing(tkMavenExtension)
 
-            createBintrayPublishing(zMavenExtension)
+            createBintrayPublishing(tkMavenExtension)
         }
 
         project.apply([plugin: 'maven-publish'])

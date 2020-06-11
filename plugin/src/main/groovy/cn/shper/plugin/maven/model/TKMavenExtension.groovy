@@ -57,7 +57,7 @@ class TKMavenExtension {
         }
 
         if (extensionError) {
-            String prefix = "Have you created the ZMaven? "
+            String prefix = "Have you created the TKMaven? "
             throw new IllegalStateException(prefix + extensionError)
         }
     }

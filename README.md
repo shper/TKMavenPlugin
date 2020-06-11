@@ -1,12 +1,32 @@
 # Shper TK-Maven
 -------
 
-## Sample usage
+## New version
+
+[![Download](https://api.bintray.com/packages/shper/maven/TK-Maven/images/download.svg)](https://bintray.com/shper/maven/TK-Maven)
+
+
+
+## Prerequisites
+
+The version of the Gradle requires to match TK-Maven's version.
+
+### TK-Maven version description
+
+| TK-Maven | Support <br /> Gradle version | Support <br /> Android build tools |
+|:---:|:---:|:---:|
+| [![Download](https://api.bintray.com/packages/shper/maven/TK-Maven/images/download.svg)](https://bintray.com/shper/maven/TK-Maven) | >= 6.0.0 | >= 4.0.0 |
+| [![Download](https://api.bintray.com/packages/shper/maven/TK-Maven/images/download.svg?version=1.0.1)](https://bintray.com/shper/maven/TK-Maven/1.0.1/link) | <= 5.6.4 | <= 3.6.3 |
+
+
+
+## Getting Started
+
 -------
 
 ### Step 1
 
-Add the Shper TK-Maven to your `buildscript`:
+Add the TK-Maven to your `buildscript`:
 
 ```
 buildscript {
@@ -15,8 +35,8 @@ buildscript {
     }
 
     dependencies {
-        // Shper TK-Maven 工具
-        classpath 'cn.shper.plugin:tk-maven:1.0.1'
+        // TK-Maven 工具
+        classpath 'cn.shper.plugin:tk-maven:<last_version>'
     }
 }
 ```
@@ -38,7 +58,7 @@ tk-maven.bintray.apiKey=XXX
 
 ### Step 3
 
-Add the shper extension to your `build.gradle`:
+Add the tkmaven extension to your `build.gradle`:
 
 ```
 apply plugin: 'tk-maven'
@@ -77,18 +97,23 @@ tkmaven {
 }
 ```
 
+### Step 4
+Start to publish you library.
+
+![image-20200611180112334](media/image-20200611180112334.png)
+
 
 ## License
 -------
 
     Copyright 2020 Shper
-
+    
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-
+    
        http://www.apache.org/licenses/LICENSE-2.0
-
+    
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.

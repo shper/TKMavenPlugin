@@ -30,7 +30,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven{ url 'https://dl.bintray.com/shper/maven' }
+//        maven{ url 'https://dl.bintray.com/shper/maven' }
     }
 
     configurations.all {

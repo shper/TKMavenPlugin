@@ -52,6 +52,9 @@ tkmaven {
         desc = 'Shper TK Maven for Gradle'
         websiteUrl = "https://www.shper.cn"
         vcsUrl = "https://github.com/shper/TKMavenPlugin"
+
+        sourcesJar = true
+        javadocJar = true
     }
 
 }

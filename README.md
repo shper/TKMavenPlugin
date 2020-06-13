@@ -1,4 +1,5 @@
-# Shper TK-Maven
+![TK-Maven](media/guide.png)
+
 -------
 
 ## New version

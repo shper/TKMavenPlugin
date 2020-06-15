@@ -22,14 +22,21 @@ import org.gradle.api.publish.maven.MavenPublication
  */
 class TKMavenPlugin extends BasePlugin {
 
+    private static final String KEY_EXTENSION_NAME = "tkmaven"
+
+    private static final String KEY_USER_NAME = "userName"
+    private static final String KEY_PASSWORD = "password"
+    private static final String KEY_MAVEN_USER_NAME = "tk-maven.userName"
+    private static final String KEY_MAVEN_PASSWORD = "tk-maven.password"
+
     private Properties local
     private TKMavenExtension tkMavenExtension
 
     @Override
     void subApply(Project project) {
-        this.tkMavenExtension = project.extensions.findByName("tkmaven")
+        this.tkMavenExtension = project.extensions.findByName(KEY_EXTENSION_NAME)
         if (!tkMavenExtension) {
-            this.tkMavenExtension = project.extensions.create("tkmaven", TKMavenExtension.class, instantiator)
+            this.tkMavenExtension = project.extensions.create(KEY_EXTENSION_NAME, TKMavenExtension.class, instantiator)
         }
 
         createLocalProperties()
@@ -140,21 +147,53 @@ class TKMavenPlugin extends BasePlugin {
 
             if (extension.auth) {
                 credentials {
-                    // 优先从命令行中获取配置
-                    username = project.hasProperty("userName")
-                            ? project.property("userName")
-                            : (StringUtils.isNotNullAndNotEmpty(extension.userName)
-                            ? extension.userName
-                            : local.getProperty("tk-maven.userName"))
-
-                    password = project.hasProperty("password")
-                            ? project.property("password")
-                            : (StringUtils.isNotNullAndNotEmpty(extension.password)
-                            ? extension.password
-                            : local.getProperty("tk-maven.password"))
+                    username = getMavenUserName(extension)
+                    password = getMavenPassword(extension)
                 }
             }
         }
+    }
+
+    private String getMavenUserName(TKMavenRepositoryExtension extension) {
+        // 获取配置优先级为：命令行，其次 extension，再 local.properties，再 ~/.gradle/gradle.properties
+        if (project.hasProperty(KEY_USER_NAME)) {
+            return project.property(KEY_USER_NAME)
+        }
+
+        if (StringUtils.isNotNullAndNotEmpty(extension.userName)) {
+            return extension.userName
+        }
+
+        if (local.getProperty(KEY_MAVEN_USER_NAME, null) != null) {
+            return local.getProperty(KEY_MAVEN_USER_NAME)
+        }
+
+        if (project.hasProperty(KEY_MAVEN_USER_NAME)) {
+            return project.property(KEY_MAVEN_USER_NAME)
+        }
+
+        return ""
+    }
+
+    private String getMavenPassword(TKMavenRepositoryExtension extension) {
+        // 获取配置优先级为：命令行，其次 extension，再 local.properties，再 ~/.gradle/gradle.properties
+        if (project.hasProperty(KEY_PASSWORD)) {
+            return project.property(KEY_PASSWORD)
+        }
+
+        if (StringUtils.isNotNullAndNotEmpty(extension.password)) {
+            return extension.password
+        }
+
+        if (local.getProperty(KEY_MAVEN_PASSWORD, null) != null) {
+            return local.getProperty(KEY_MAVEN_PASSWORD)
+        }
+
+        if (project.hasProperty(KEY_MAVEN_PASSWORD)) {
+            return project.property(KEY_MAVEN_PASSWORD)
+        }
+
+        return ""
     }
 
     private void createShperPublishTaskByName(String name) {
@@ -164,7 +203,7 @@ class TKMavenPlugin extends BasePlugin {
 
     private void createShperPublishTask(String name, Object object) {
         project.tasks.create(name) { Task task ->
-            task.setGroup("tkMaven")
+            task.setGroup(KEY_EXTENSION_NAME)
             task.dependsOn(object)
         }
     }

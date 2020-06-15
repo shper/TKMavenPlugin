@@ -64,4 +64,16 @@ tkmaven {
         javadocJar = false
     }
 
+    bintray {
+        repo = "maven"
+        userOrg = "shper"
+        name = "demo"
+        desc = 'The demo lib for Gradle'
+        websiteUrl = "https://www.shper.cn"
+        vcsUrl = "https://www.shper.cn"
+
+        sourcesJar = true
+        javadocJar = true
+    }
+
 }

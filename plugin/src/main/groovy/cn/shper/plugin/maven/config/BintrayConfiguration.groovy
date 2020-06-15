@@ -1,6 +1,7 @@
 package cn.shper.plugin.maven.config
 
 import cn.shper.plugin.core.util.StringUtils
+import cn.shper.plugin.maven.model.TKMavenBintrayExtension
 import cn.shper.plugin.maven.model.TKMavenExtension
 import org.gradle.api.Project
 
@@ -10,6 +11,11 @@ import org.gradle.api.Project
  */
 class BintrayConfiguration {
 
+    private static final String KEY_USER = "user"
+    private static final String KEY_API = "apiKey"
+    private static final String KEY_BINTRAY_USER = "tk-maven.bintray.user"
+    private static final String KEY_BINTRAY_API = "tk-maven.bintray.apiKey"
+
     static void configure(Project project,
                           Properties local,
                           TKMavenExtension extension) {
@@ -17,23 +23,16 @@ class BintrayConfiguration {
         def bintrayExtension = extension.bintray
 
         project.bintray {
-            // 优先从命令行中获取配置
-            user = project.hasProperty("user")
-                    ? project.property("user")
-                    : (StringUtils.isNotNullAndNotEmpty(bintrayExtension.user) ?
-                    bintrayExtension.user : local.getProperty("tk-maven.bintray.user"))
-
-            key = project.hasProperty("apiKey")
-                    ? project.property("apiKey")
-                    : (StringUtils.isNotNullAndNotEmpty(bintrayExtension.apiKey) ?
-                    bintrayExtension.apiKey : local.getProperty("tk-maven.bintray.apiKey"))
+            user = getUser(project, local, bintrayExtension)
+            key = getKey(project, local, bintrayExtension)
 
             publish = bintrayExtension.publish
             dryRun = bintrayExtension.dryRun
             override = bintrayExtension.override
 
-            publications = bintrayExtension.publications ?: project.plugins.hasPlugin('com.android.library') ?
-                    ['bintrayRelease'] : ['bintray']
+            publications = bintrayExtension.publications
+                    ?: project.plugins.hasPlugin('com.android.library')
+                    ? ['bintrayRelease'] : ['bintray']
 
             pkg {
                 repo = bintrayExtension.repo
@@ -53,6 +52,52 @@ class BintrayConfiguration {
         }
 
         project.tasks.bintrayUpload.mustRunAfter(project.tasks.uploadArchives)
+    }
+
+    private static String getUser(Project project,
+                                  Properties local,
+                                  TKMavenBintrayExtension bintrayExtension) {
+        // 获取配置优先级为：命令行，其次 extension，再 local.properties，再 ~/.gradle/gradle.properties
+        if (project.hasProperty(KEY_USER)) {
+            return project.property(KEY_USER)
+        }
+
+        if (StringUtils.isNotNullAndNotEmpty(bintrayExtension.user)) {
+            return bintrayExtension.user
+        }
+
+        if (local.getProperty(KEY_BINTRAY_USER, null) != null) {
+            return local.getProperty(KEY_BINTRAY_USER)
+        }
+
+        if (project.hasProperty(KEY_BINTRAY_USER)) {
+            return project.property(KEY_BINTRAY_USER)
+        }
+
+        return ""
+    }
+
+    private static String getKey(Project project,
+                                 Properties local,
+                                 TKMavenBintrayExtension bintrayExtension) {
+        // 获取配置优先级为：命令行，其次 extension，再 local.properties，再 ~/.gradle/gradle.properties
+        if (project.hasProperty(KEY_API)) {
+            return project.property(KEY_API)
+        }
+
+        if (StringUtils.isNotNullAndNotEmpty(bintrayExtension.apiKey)) {
+            return bintrayExtension.apiKey
+        }
+
+        if (local.getProperty(KEY_BINTRAY_API, null) != null) {
+            return local.getProperty(KEY_BINTRAY_API)
+        }
+
+        if (project.hasProperty(KEY_BINTRAY_API)) {
+            return project.property(KEY_BINTRAY_API)
+        }
+
+        return ""
     }
 
 }

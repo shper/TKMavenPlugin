@@ -20,7 +20,7 @@ tkmaven {
     version = project.extVersion
 
     repository {
-        url = "./../repo"
+        url = "./../.repo"
         auth = false
 
         sourcesJar = true
@@ -28,7 +28,7 @@ tkmaven {
     }
 
     snapshotRepository {
-        url = './../repo'
+        url = "./../.repo-snapshot"
         auth = false
 
         sourcesJar = true

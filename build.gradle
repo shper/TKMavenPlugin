@@ -8,7 +8,8 @@ buildscript {
         google()
         jcenter()
         maven{ url 'https://dl.bintray.com/shper/maven' }
-        maven{ url './repo/' }
+        maven{ url './.repo/' }
+        maven{ url './.repo-snapshot/' }
     }
 
     dependencies {
@@ -18,8 +19,8 @@ buildscript {
         // in the individual module build.gradle files
 
         // TK-Maven 工具
-        classpath 'cn.shper.plugin:tk-maven:1.1.0'
-//        classpath 'cn.shper.plugin:tk-maven:1.2.0-SNAPSHOT'
+//        classpath 'cn.shper.plugin:tk-maven:1.1.0'
+        classpath 'cn.shper.plugin:tk-maven:1.2.0-SNAPSHOT'
     }
 
     configurations.all {
@@ -34,6 +35,8 @@ allprojects {
         google()
         jcenter()
 //        maven{ url 'https://dl.bintray.com/shper/maven' }
+        maven{ url './.repo/' }
+        maven{ url './.repo-snapshot/' }
     }
 
     configurations.all {

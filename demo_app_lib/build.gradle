@@ -49,19 +49,19 @@ tkmaven {
     version = project.extVersion
 
     repository {
-        url = "./../repo"
+        url = "./../.repo"
         auth = false
 
-        sourcesJar = true
+        sourcesJar = false
         javadocJar = true
     }
 
     snapshotRepository {
-        url = './../repo'
+        url = "./../.repo-snapshot"
         auth = false
 
-        sourcesJar = false
-        javadocJar = false
+        sourcesJar = true
+        javadocJar = true
     }
 
     bintray {

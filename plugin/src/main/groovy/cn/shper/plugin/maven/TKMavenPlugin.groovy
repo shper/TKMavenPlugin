@@ -99,7 +99,7 @@ class TKMavenPlugin extends BasePlugin {
                 new AndroidAttachments(name, project, variant, anInterface).attachTo(publication)
 
                 if (namePrefix != "bintray") {
-                    createShperPublishTaskByName(name)
+                    createShperPublishTaskByName(name, isSnapshot)
                 }
             }
         }
@@ -109,7 +109,7 @@ class TKMavenPlugin extends BasePlugin {
             new JavaAttachments(namePrefix, project, anInterface).attachTo(publication)
 
             if (namePrefix != "bintray") {
-                createShperPublishTaskByName(namePrefix)
+                createShperPublishTaskByName(namePrefix, isSnapshot)
             }
         }
     }
@@ -117,7 +117,6 @@ class TKMavenPlugin extends BasePlugin {
     private MavenPublication createPublication(boolean isSnapshot,
                                                String name,
                                                TKMavenExtension extension) {
-
         String groupId = extension.groupId
         String artifactId = extension.artifactId
 
@@ -196,9 +195,16 @@ class TKMavenPlugin extends BasePlugin {
         return ""
     }
 
-    private void createShperPublishTaskByName(String name) {
+    private void createShperPublishTaskByName(String name, boolean isSnapshot) {
         String taskName = "publish" + StringUtils.toUpperCase(name, 1)
-        createShperPublishTask(taskName, project.tasks.getByName(taskName + "PublicationToMavenRepository"))
+        String nameSuffix
+        if (isSnapshot) {
+            nameSuffix = "PublicationToSnapshotRepository"
+        } else {
+            nameSuffix = "PublicationToMavenRepository"
+        }
+
+        createShperPublishTask(taskName, project.tasks.getByName(taskName + nameSuffix))
     }
 
     private void createShperPublishTask(String name, Object object) {

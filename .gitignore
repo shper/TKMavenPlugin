@@ -9,3 +9,5 @@
 .cxx
 .repo/*
 repo/
+.repo
+.repo-snapshot

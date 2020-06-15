@@ -31,7 +31,6 @@ tkmaven {
 
     repository {
         url = "./../.repo"
-        auth = false
 
         sourcesJar = false
         javadocJar = false
@@ -39,7 +38,6 @@ tkmaven {
 
     snapshotRepository {
         url = "./../.repo-snapshot"
-        auth = false
 
         sourcesJar = true
         javadocJar = true

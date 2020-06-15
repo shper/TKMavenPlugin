@@ -10,8 +10,6 @@ class TKMavenRepositoryExtension extends Artifactable {
 
     String url
 
-    boolean auth = true
-
     String userName
 
     String password

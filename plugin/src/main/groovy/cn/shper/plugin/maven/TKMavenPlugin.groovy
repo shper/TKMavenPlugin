@@ -144,7 +144,7 @@ class TKMavenPlugin extends BasePlugin {
             name = alias
             url = extension.url
 
-            if (extension.auth) {
+            if (getMavenUserName(extension) != null && getMavenPassword(extension) != null) {
                 credentials {
                     username = getMavenUserName(extension)
                     password = getMavenPassword(extension)
@@ -171,7 +171,7 @@ class TKMavenPlugin extends BasePlugin {
             return project.property(KEY_MAVEN_USER_NAME)
         }
 
-        return ""
+        return null
     }
 
     private String getMavenPassword(TKMavenRepositoryExtension extension) {
@@ -192,7 +192,7 @@ class TKMavenPlugin extends BasePlugin {
             return project.property(KEY_MAVEN_PASSWORD)
         }
 
-        return ""
+        return null
     }
 
     private void createShperPublishTaskByName(String name, boolean isSnapshot) {

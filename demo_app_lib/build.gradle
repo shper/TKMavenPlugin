@@ -12,6 +12,8 @@ android {
         versionCode 1000001
         versionName "1.0.0"
 
+        flavorDimensions "default"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
@@ -20,6 +22,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors{
+        flavor1{
+        }
+        flavor2{
         }
     }
 
@@ -47,6 +56,8 @@ tkmaven {
     groupId = project.groupId
     artifactId = project.artifactId
     version = project.extVersion
+
+//    debug = true
 
     repository {
         url = "./../.repo"

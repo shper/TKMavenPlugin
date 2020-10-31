@@ -1,5 +1,6 @@
 package cn.shper.plugin.maven
 
+import cn.shper.plugin.core.util.Logger
 import cn.shper.plugin.core.util.StringUtils
 import cn.shper.plugin.core.base.BasePlugin
 import cn.shper.plugin.maven.attachment.AndroidAttachments
@@ -94,6 +95,12 @@ class TKMavenPlugin extends BasePlugin {
 
         project.plugins.withId("com.android.library") {
             project.android.libraryVariants.all { LibraryVariant variant ->
+                if (!mavenExtension.debug && variant.buildType.debuggable) {
+                    return
+                }
+
+                Logger.d("flavorName: " + variant.flavorName)
+
                 String name = namePrefix + StringUtils.toUpperCase(variant.name, 1)
                 MavenPublication publication = createPublication(isSnapshot, name, mavenExtension)
                 new AndroidAttachments(name, project, variant, anInterface).attachTo(publication)

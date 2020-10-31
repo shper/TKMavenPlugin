@@ -14,6 +14,8 @@ class TKMavenExtension {
     String artifactId
     String version
 
+    Boolean debug = false
+
     TKMavenRepositoryExtension repository
     TKMavenRepositoryExtension snapshotRepository
     TKMavenBintrayExtension bintray

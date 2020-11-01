@@ -1,12 +1,13 @@
 package cn.shper.plugin.maven
 
-import cn.shper.plugin.core.util.Logger
 import cn.shper.plugin.core.util.StringUtils
 import cn.shper.plugin.core.base.BasePlugin
 import cn.shper.plugin.maven.attachment.AndroidAttachments
 import cn.shper.plugin.maven.attachment.JavaAttachments
 import cn.shper.plugin.maven.config.BintrayConfiguration
 import cn.shper.plugin.maven.model.TKMavenExtension
+import cn.shper.plugin.maven.model.TKMavenFlavorExtension
+import cn.shper.plugin.maven.model.TKMavenFlavorFactory
 import cn.shper.plugin.maven.model.TKMavenRepositoryExtension
 import cn.shper.plugin.maven.model.ability.Artifactable
 import com.android.build.gradle.api.LibraryVariant
@@ -32,12 +33,24 @@ class TKMavenPlugin extends BasePlugin {
 
     private Properties local
     private TKMavenExtension tkMavenExtension
+    final Map<String, TKMavenFlavorExtension> flavors = [:]
 
     @Override
     void subApply(Project project) {
         this.tkMavenExtension = project.extensions.findByName(KEY_EXTENSION_NAME)
         if (!tkMavenExtension) {
-            this.tkMavenExtension = project.extensions.create(KEY_EXTENSION_NAME, TKMavenExtension.class, instantiator)
+
+            def flavorContainer = project.container(TKMavenFlavorExtension,
+                    new TKMavenFlavorFactory(instantiator))
+
+            this.tkMavenExtension = project.extensions.create(KEY_EXTENSION_NAME,
+                    TKMavenExtension.class,
+                    instantiator,
+                    flavorContainer)
+
+            flavorContainer.whenObjectAdded { TKMavenFlavorExtension flavor ->
+                addFlavor(flavor)
+            }
         }
 
         createLocalProperties()
@@ -52,6 +65,10 @@ class TKMavenPlugin extends BasePlugin {
 
         project.apply([plugin: 'maven-publish'])
         new BintrayPlugin().apply(project)
+    }
+
+    private void addFlavor(TKMavenFlavorExtension flavor) {
+        flavors[flavor.name] = flavor
     }
 
     private void createLocalProperties() {
@@ -99,10 +116,12 @@ class TKMavenPlugin extends BasePlugin {
                     return
                 }
 
-                Logger.d("flavorName: " + variant.flavorName)
-
                 String name = namePrefix + StringUtils.toUpperCase(variant.name, 1)
-                MavenPublication publication = createPublication(isSnapshot, name, mavenExtension)
+
+                String flavorName = variant.flavorName
+                TKMavenFlavorExtension flavorExtension = flavors.get(flavorName)
+
+                MavenPublication publication = createPublication(isSnapshot, name, mavenExtension, flavorExtension)
                 new AndroidAttachments(name, project, variant, anInterface).attachTo(publication)
 
                 if (namePrefix != "bintray") {
@@ -112,7 +131,7 @@ class TKMavenPlugin extends BasePlugin {
         }
 
         project.plugins.withId("java") {
-            MavenPublication publication = createPublication(isSnapshot, namePrefix, mavenExtension)
+            MavenPublication publication = createPublication(isSnapshot, namePrefix, mavenExtension, null)
             new JavaAttachments(namePrefix, project, anInterface).attachTo(publication)
 
             if (namePrefix != "bintray") {
@@ -123,11 +142,37 @@ class TKMavenPlugin extends BasePlugin {
 
     private MavenPublication createPublication(boolean isSnapshot,
                                                String name,
-                                               TKMavenExtension extension) {
+                                               TKMavenExtension extension,
+                                               TKMavenFlavorExtension flavorExtension) {
+
         String groupId = extension.groupId
         String artifactId = extension.artifactId
 
         String version = extension.version
+
+        if (flavorExtension != null) {
+            if (StringUtils.isNotNullAndNotEmpty(flavorExtension.groupIdSuffix)) {
+                groupId += flavorExtension.groupIdSuffix
+            }
+            if (StringUtils.isNotNullAndNotEmpty(flavorExtension.groupId)) {
+                groupId = flavorExtension.groupId
+            }
+
+            if (StringUtils.isNotNullAndNotEmpty(flavorExtension.artifactIdSuffix)) {
+                artifactId += flavorExtension.artifactIdSuffix
+            }
+            if (StringUtils.isNotNullAndNotEmpty(flavorExtension.artifactId)) {
+                artifactId = flavorExtension.artifactId
+            }
+
+            if (StringUtils.isNotNullAndNotEmpty(flavorExtension.versionSuffix)) {
+                version += flavorExtension.versionSuffix
+            }
+            if (StringUtils.isNotNullAndNotEmpty(flavorExtension.version)) {
+                version = flavorExtension.version
+            }
+        }
+
         if (isSnapshot && !version.endsWith("-SNAPSHOT")) {
             version += "-SNAPSHOT"
         }

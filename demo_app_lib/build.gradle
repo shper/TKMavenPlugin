@@ -30,6 +30,8 @@ android {
         }
         flavor2{
         }
+        flavor3{
+        }
     }
 
 }
@@ -58,6 +60,19 @@ tkmaven {
     version = project.extVersion
 
 //    debug = true
+
+    flavors {
+        flavor1 {
+//            groupId = "cn.shper.demo.flavor1"
+//            artifactId = "app_lib-flavor1"
+            version = "1.0.0-flavor1"
+        }
+        flavor2 {
+//            groupIdSuffix = ".flavor2"
+//            artifactIdSuffix = "-flavor2"
+            versionSuffix = "-flavor3"
+        }
+    }
 
     repository {
         url = "./../.repo"

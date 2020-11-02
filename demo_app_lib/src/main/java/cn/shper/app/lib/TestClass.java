@@ -5,4 +5,8 @@ package cn.shper.app.lib;
  * Version: V0.1 2020-01-23
  */
 public class TestClass {
+
+    public static void test() {
+    }
+
 }

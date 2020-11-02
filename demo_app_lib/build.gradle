@@ -10,7 +10,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1000001
-        versionName "1.0.0"
+        versionName "1.8.0"
 
         flavorDimensions "default"
 
@@ -26,11 +26,9 @@ android {
     }
 
     productFlavors{
-        flavor1{
+        flavor1 {
         }
-        flavor2{
-        }
-        flavor3{
+        flavor2 {
         }
     }
 
@@ -48,7 +46,7 @@ dependencies {
 }
 
 ext {
-    extVersion = "1.0.0"
+    extVersion = "1.8.0"
     groupId = "cn.shper.demo"
     artifactId = "app_lib"
 }
@@ -65,12 +63,14 @@ tkmaven {
         flavor1 {
 //            groupId = "cn.shper.demo.flavor1"
 //            artifactId = "app_lib-flavor1"
-            version = "1.0.0-flavor1"
+//            version = "1.0.0-flavor1"
+
+            artifactIdSuffix = "-flavor1"
+            versionSuffix = "-flavor1"
         }
         flavor2 {
-//            groupIdSuffix = ".flavor2"
 //            artifactIdSuffix = "-flavor2"
-            versionSuffix = "-flavor3"
+            versionSuffix = "-flavor2"
         }
     }
 

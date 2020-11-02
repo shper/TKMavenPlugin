@@ -19,7 +19,7 @@ buildscript {
         // in the individual module build.gradle files
 
         // TK-Maven 工具
-        classpath 'cn.shper.plugin:tk-maven:1.3.0-SNAPSHOT'
+        classpath 'cn.shper.plugin:tk-maven:1.5.0'
     }
 
     configurations.all {

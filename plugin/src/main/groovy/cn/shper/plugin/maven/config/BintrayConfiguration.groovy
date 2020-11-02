@@ -18,7 +18,8 @@ class BintrayConfiguration {
 
     static void configure(Project project,
                           Properties local,
-                          TKMavenExtension extension) {
+                          TKMavenExtension extension,
+                          List<String> publicationList) {
 
         def bintrayExtension = extension.bintray
 
@@ -30,9 +31,7 @@ class BintrayConfiguration {
             dryRun = bintrayExtension.dryRun
             override = bintrayExtension.override
 
-            publications = bintrayExtension.publications
-                    ?: project.plugins.hasPlugin('com.android.library')
-                    ? ['bintrayRelease'] : ['bintray']
+            publications = bintrayExtension.publications ?: publicationList.toArray()
 
             pkg {
                 repo = bintrayExtension.repo

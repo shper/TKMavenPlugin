@@ -33,7 +33,9 @@ class TKMavenPlugin extends BasePlugin {
 
     private Properties local
     private TKMavenExtension tkMavenExtension
-    final Map<String, TKMavenFlavorExtension> flavors = [:]
+
+    private List<String> flavors = []
+    final private Map<String, TKMavenFlavorExtension> flavorExtensionMap = [:]
 
     @Override
     void subApply(Project project) {
@@ -49,7 +51,7 @@ class TKMavenPlugin extends BasePlugin {
                     flavorContainer)
 
             flavorContainer.whenObjectAdded { TKMavenFlavorExtension flavor ->
-                addFlavor(flavor)
+                flavorExtensionMap[flavor.name] = flavor
             }
         }
 
@@ -65,10 +67,6 @@ class TKMavenPlugin extends BasePlugin {
 
         project.apply([plugin: 'maven-publish'])
         new BintrayPlugin().apply(project)
-    }
-
-    private void addFlavor(TKMavenFlavorExtension flavor) {
-        flavors[flavor.name] = flavor
     }
 
     private void createLocalProperties() {
@@ -99,10 +97,31 @@ class TKMavenPlugin extends BasePlugin {
             return
         }
 
-        BintrayConfiguration.configure(project, local, mavenExtension)
         attachArtifacts(mavenExtension, mavenExtension.bintray, "bintray", false)
 
+        BintrayConfiguration.configure(project, local, mavenExtension, createBintrayPublications())
         createShperPublishTask("publishBintray", project.tasks.bintrayUpload)
+    }
+
+    private List<String> createBintrayPublications() {
+        List<String> publicationList = []
+        if (!project.plugins.hasPlugin('com.android.library')) {
+            publicationList.add('bintray')
+
+            return publicationList
+        }
+
+        if (flavors.isEmpty()) {
+            publicationList.add('bintrayRelease')
+
+            return publicationList
+        }
+
+        flavors.each { value ->
+            publicationList.add('bintray' + value + 'Release')
+        }
+        
+        return publicationList
     }
 
     private void attachArtifacts(TKMavenExtension mavenExtension,
@@ -119,7 +138,12 @@ class TKMavenPlugin extends BasePlugin {
                 String name = namePrefix + StringUtils.toUpperCase(variant.name, 1)
 
                 String flavorName = variant.flavorName
-                TKMavenFlavorExtension flavorExtension = flavors.get(flavorName)
+                TKMavenFlavorExtension flavorExtension = flavorExtensionMap.get(flavorName)
+
+                if (StringUtils.isNotNullAndNotEmpty(flavorName) &&
+                        !flavors.contains(StringUtils.toUpperCase(flavorName, 1))) {
+                    flavors.add(StringUtils.toUpperCase(flavorName, 1))
+                }
 
                 MavenPublication publication = createPublication(isSnapshot, name, mavenExtension, flavorExtension)
                 new AndroidAttachments(name, project, variant, anInterface).attachTo(publication)

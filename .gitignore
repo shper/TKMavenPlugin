@@ -9,5 +9,5 @@
 .cxx
 .repo/*
 repo/
-.repo
-.repo-snapshot
+.repo/
+.repo-snapshot/

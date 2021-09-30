@@ -1,20 +1,19 @@
 apply plugin: 'groovy'
 
 repositories {
-    mavenLocal()
-    jcenter()
+    google()
+    mavenCentral()
 }
 
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
 
-    implementation 'com.android.tools.build:gradle:4.0.0'
-    implementation 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+    implementation 'com.android.tools.build:gradle:4.2.0'
 }
 
 ext {
-    extVersion = "1.0.1"
+    extVersion = "2.0.0"
     groupId = "cn.shper.plugin"
     artifactId = "core"
 }
@@ -34,18 +33,6 @@ tkmaven {
 
     snapshotRepository {
         url = "./../.repo-snapshot"
-
-        sourcesJar = true
-        javadocJar = true
-    }
-
-    bintray {
-        repo = "maven"
-        userOrg = "shper"
-        name = "TK-Plugin-Core"
-        desc = 'Shper TK Plugin Core for Gradle'
-        websiteUrl = "https://www.shper.cn"
-        vcsUrl = "https://github.com/shper/TKMavenPlugin"
 
         sourcesJar = true
         javadocJar = true

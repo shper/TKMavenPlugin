@@ -4,8 +4,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-sourceCompatibility = "7"
-targetCompatibility = "7"
+sourceCompatibility = "8"
+targetCompatibility = "8"
 
 ext {
     extVersion = "1.0.0"
@@ -13,24 +13,24 @@ ext {
     artifactId = "java_lib"
 }
 
-apply plugin: 'tk-maven'
-tkmaven {
-    groupId = project.groupId
-    artifactId = project.artifactId
-    version = project.extVersion
-
-    repository {
-        url = "./../.repo"
-
-        sourcesJar = true
-        javadocJar = true
-    }
-
-    snapshotRepository {
-        url = "./../.repo-snapshot"
-
-        sourcesJar = true
-        javadocJar = true
-    }
-
-}
+//apply plugin: 'tk-maven'
+//tkmaven {
+//    groupId = project.groupId
+//    artifactId = project.artifactId
+//    version = project.extVersion
+//
+//    repository {
+//        url = "./../.repo"
+//
+//        sourcesJar = true
+//        javadocJar = true
+//    }
+//
+//    snapshotRepository {
+//        url = "./../.repo-snapshot"
+//
+//        sourcesJar = true
+//        javadocJar = true
+//    }
+//
+//}

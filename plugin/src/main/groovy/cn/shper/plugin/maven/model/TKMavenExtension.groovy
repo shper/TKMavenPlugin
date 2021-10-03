@@ -1,10 +1,11 @@
 package cn.shper.plugin.maven.model
 
-import cn.shper.plugin.core.util.Logger
 import cn.shper.plugin.core.util.StringUtils
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Project
 import org.gradle.internal.reflect.Instantiator
+import org.gradle.api.publish.maven.internal.publication.*
 
 /**
  * Author: shper
@@ -18,35 +19,41 @@ class TKMavenExtension {
 
     Boolean debug = false
 
-    final NamedDomainObjectContainer<TKMavenFlavorExtension> flavors
+    final NamedDomainObjectContainer<TKFlavorExtension> flavors
 
-    TKMavenRepositoryExtension repository
-    TKMavenRepositoryExtension snapshotRepository
-    TKMavenBintrayExtension bintray
+    TKRepositoryExtension repository
+    TKRepositoryExtension snapshotRepository
 
-    TKMavenExtension(Instantiator instantiator,
-                     NamedDomainObjectContainer<TKMavenFlavorExtension> flavors) {
+    DefaultMavenPom pom
+
+    TKMavenExtension(Project project,
+                     Instantiator instantiator,
+                     NamedDomainObjectContainer<TKFlavorExtension> flavors) {
         this.flavors = flavors
 
-        this.repository = instantiator.newInstance(TKMavenRepositoryExtension.class)
-        this.snapshotRepository = instantiator.newInstance(TKMavenRepositoryExtension.class)
-        this.bintray = instantiator.newInstance(TKMavenBintrayExtension.class)
+        this.repository = instantiator.newInstance(TKRepositoryExtension.class)
+        this.snapshotRepository = instantiator.newInstance(TKRepositoryExtension.class)
+
+        this.pom = instantiator.newInstance(DefaultMavenPom.class,
+            null,
+            instantiator,
+            project.objects)
     }
 
-    void flavors(Action<? super NamedDomainObjectContainer<TKMavenFlavorExtension>> action) {
+    void flavors(Action<? super NamedDomainObjectContainer<TKFlavorExtension>> action) {
         action.execute(flavors)
     }
 
-    void repository(Action<TKMavenRepositoryExtension> action) {
+    void repository(Action<TKRepositoryExtension> action) {
         action.execute(repository)
     }
 
-    void snapshotRepository(Action<TKMavenRepositoryExtension> action) {
+    void snapshotRepository(Action<TKRepositoryExtension> action) {
         action.execute(snapshotRepository)
     }
 
-    void bintray(Action<TKMavenBintrayExtension> action) {
-        action.execute(bintray)
+    void pom(Action<DefaultMavenPom> action) {
+        action.execute(pom)
     }
 
     void validate() {

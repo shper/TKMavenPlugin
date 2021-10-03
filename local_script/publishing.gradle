@@ -1,0 +1,23 @@
+apply plugin: 'maven-publish'
+
+publishing {
+  publications {
+    Archives(MavenPublication) {
+      from components.java
+
+      groupId = project.groupId
+      artifactId = project.artifactId
+      version = project.extVersion
+    }
+  }
+  repositories {
+    maven {
+      name = "repo"
+      url = './../.repo'
+    }
+    maven {
+      name = "snapshot"
+      url = './../.repo-snapshot'
+    }
+  }
+}

@@ -31,12 +31,12 @@ class JavaAttachments extends MavenAttachments {
 
     private static Task javaSourcesJarTask(Project project, String name) {
         JavaCompile javaCompile = project.compileJava
-        return sourcesJarTask(project, name, javaCompile.source)
+        return sourcesJarTask(project, name, null, javaCompile.source)
     }
 
     private static Task javaJavadocsJarTask(Project project, String name) {
         Javadoc javadoc = project.javadoc
-        return javadocsJarTask(project, name, javadoc)
+        return javadocsJarTask(project, name, javadoc,null)
     }
 
 }

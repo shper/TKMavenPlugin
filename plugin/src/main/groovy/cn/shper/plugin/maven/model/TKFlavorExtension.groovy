@@ -1,11 +1,10 @@
 package cn.shper.plugin.maven.model
 
-
 /**
  * Author: shper
  * Version: V0.1 2020-10-31
  */
-class TKMavenFlavorExtension {
+class TKFlavorExtension {
 
     String name
 
@@ -18,7 +17,7 @@ class TKMavenFlavorExtension {
     String version
     String versionSuffix
 
-    TKMavenFlavorExtension(String name) {
+  TKFlavorExtension(String name) {
         this.name = name
     }
 

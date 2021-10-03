@@ -19,7 +19,7 @@ class AndroidAttachments extends MavenAttachments {
     private static final String ANDROID_SOFTWARE_COMPONENT_COMPAT_4_8 = 'cn.shper.plugin.compat.gradle4_8.AndroidSoftwareComponentCompat_Gradle_4_8'
     private static final String ANDROID_SOFTWARE_COMPONENT_COMPAT_5_2 = 'cn.shper.plugin.compat.gradle5_2.AndroidSoftwareComponentCompat_Gradle_5_2'
     private static final String ANDROID_SOFTWARE_COMPONENT_COMPAT_5_3 = 'cn.shper.plugin.compat.gradle5_3.AndroidSoftwareComponentCompat_Gradle_5_3'
-    private static final String ANDROID_SOFTWARE_COMPONENT_COMPAT_6_0 = 'cn.shper.plugin.compat.gradle_6_0.AndroidSoftwareComponentCompat_Gradle_6_0'
+    private static final String ANDROID_SOFTWARE_COMPONENT_COMPAT_6_0 = 'cn.shper.plugin.compat.gradle6_0.AndroidSoftwareComponentCompat_Gradle_6_0'
 
     AndroidAttachments(String name, Project project, LibraryVariant variant, Artifactable artifactable) {
         super(androidComponentFrom(project))
@@ -63,7 +63,11 @@ class AndroidAttachments extends MavenAttachments {
 
     private static Task androidSourcesJarTask(Project project, String publicationName, LibraryVariant variant) {
         def sourcePaths = variant.sourceSets.collect { it.javaDirectories }.flatten()
-        return sourcesJarTask(project, publicationName, sourcePaths)
+
+        def excludes = new ArrayList<String>()
+        excludes.add("**/R.class")
+
+        return sourcesJarTask(project, publicationName, excludes, sourcePaths)
     }
 
     private static Task androidJavadocsJarTask(Project project, String publicationName, LibraryVariant variant) {
@@ -72,7 +76,7 @@ class AndroidAttachments extends MavenAttachments {
             javadoc.classpath = variant.javaCompileProvider.get().classpath
         } as Javadoc
 
-        return javadocsJarTask(project, publicationName, javadoc)
+        return javadocsJarTask(project, publicationName, javadoc,null)
     }
 
     private static def androidArchivePath(LibraryVariant variant) {

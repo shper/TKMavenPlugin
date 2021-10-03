@@ -38,17 +38,28 @@ class MavenAttachments {
         publication.from softwareComponent
     }
 
-    protected static Task sourcesJarTask(Project project, String publicationName, def ... sourcePaths) {
+    protected static Task sourcesJarTask(Project project, String publicationName, List<String> excludes, def ... sourcePaths) {
         return project.task("sourcesJarFor${publicationName.capitalize()}", type: Jar) { Jar jar ->
             jar.archiveClassifier.set("sources")
+
+            if (CollectionUtils.isNotNullAndNotEmpty(excludes)) {
+              jar.exclude(excludes)
+            }
+
             jar.from sourcePaths
         }
     }
 
-    protected static Task javadocsJarTask(Project project, String publicationName, Javadoc javadoc) {
+    protected static Task javadocsJarTask(Project project, String publicationName, Javadoc javadoc, List<String> excludes) {
         return project.task("javadocsJarFor${publicationName.capitalize()}", type: Jar) { Jar jar ->
             jar.archiveClassifier.set("javadoc")
-            jar.exclude("**/*.kt")
+
+            if (excludes == null) {
+                excludes = new ArrayList<String>()
+            }
+            excludes.add("**/*.kt")
+            jar.exclude(excludes)
+
             jar.from project.files(javadoc)
         }
     }

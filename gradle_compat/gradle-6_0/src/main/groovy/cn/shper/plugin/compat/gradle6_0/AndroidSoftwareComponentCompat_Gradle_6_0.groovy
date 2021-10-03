@@ -1,4 +1,4 @@
-package cn.shper.plugin.compat.gradle_6_0
+package cn.shper.plugin.compat.gradle6_0
 
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.PublishArtifact
@@ -8,7 +8,7 @@ import org.gradle.api.internal.attributes.ImmutableAttributesFactory
 import org.gradle.api.internal.component.SoftwareComponentInternal
 import org.gradle.api.internal.component.UsageContext
 import org.gradle.api.model.ObjectFactory
-import cn.shper.plugin.compat.gradle_6_0.LazyConfigurationUsageContext
+import cn.shper.plugin.compat.gradle6_0.LazyConfigurationUsageContext
 
 import javax.inject.Inject
 

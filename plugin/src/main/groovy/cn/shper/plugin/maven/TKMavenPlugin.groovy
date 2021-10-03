@@ -1,21 +1,25 @@
 package cn.shper.plugin.maven
 
 import cn.shper.plugin.core.util.StringUtils
+import cn.shper.plugin.core.util.CollectionUtils
 import cn.shper.plugin.core.base.BasePlugin
 import cn.shper.plugin.maven.attachment.AndroidAttachments
 import cn.shper.plugin.maven.attachment.JavaAttachments
-import cn.shper.plugin.maven.config.BintrayConfiguration
+
 import cn.shper.plugin.maven.model.TKMavenExtension
-import cn.shper.plugin.maven.model.TKMavenFlavorExtension
-import cn.shper.plugin.maven.model.TKMavenFlavorFactory
-import cn.shper.plugin.maven.model.TKMavenRepositoryExtension
+import cn.shper.plugin.maven.model.TKFlavorExtension
+import cn.shper.plugin.maven.model.TKFlavorFactory
+import cn.shper.plugin.maven.model.TKRepositoryExtension
 import cn.shper.plugin.maven.model.ability.Artifactable
 import com.android.build.gradle.api.LibraryVariant
-import com.jfrog.bintray.gradle.BintrayPlugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.publish.PublicationContainer
 import org.gradle.api.publish.PublishingExtension
+import org.gradle.api.publish.maven.MavenPom
+import org.gradle.api.publish.maven.MavenPomDeveloperSpec
+import org.gradle.api.publish.maven.MavenPomLicenseSpec
+import org.gradle.api.publish.maven.MavenPomScm
 import org.gradle.api.publish.maven.MavenPublication
 
 /**
@@ -35,22 +39,23 @@ class TKMavenPlugin extends BasePlugin {
     private TKMavenExtension tkMavenExtension
 
     private List<String> flavors = []
-    final private Map<String, TKMavenFlavorExtension> flavorExtensionMap = [:]
+    final private Map<String, TKFlavorExtension> flavorExtensionMap = [:]
 
     @Override
     void subApply(Project project) {
         this.tkMavenExtension = project.extensions.findByName(KEY_EXTENSION_NAME)
         if (!tkMavenExtension) {
 
-            def flavorContainer = project.container(TKMavenFlavorExtension,
-                    new TKMavenFlavorFactory(instantiator))
+            def flavorContainer = project.container(TKFlavorExtension,
+                    new TKFlavorFactory(instantiator))
 
             this.tkMavenExtension = project.extensions.create(KEY_EXTENSION_NAME,
                     TKMavenExtension.class,
+                    project,
                     instantiator,
                     flavorContainer)
 
-            flavorContainer.whenObjectAdded { TKMavenFlavorExtension flavor ->
+            flavorContainer.whenObjectAdded { TKFlavorExtension flavor ->
                 flavorExtensionMap[flavor.name] = flavor
             }
         }
@@ -61,12 +66,9 @@ class TKMavenPlugin extends BasePlugin {
             tkMavenExtension.validate()
 
             createPublishing(tkMavenExtension)
-
-            createBintrayPublishing(tkMavenExtension)
         }
 
         project.apply([plugin: 'maven-publish'])
-        new BintrayPlugin().apply(project)
     }
 
     private void createLocalProperties() {
@@ -92,38 +94,6 @@ class TKMavenPlugin extends BasePlugin {
         }
     }
 
-    private void createBintrayPublishing(TKMavenExtension mavenExtension) {
-        if (!mavenExtension.bintray || !mavenExtension.bintray.validate()) {
-            return
-        }
-
-        attachArtifacts(mavenExtension, mavenExtension.bintray, "bintray", false)
-
-        BintrayConfiguration.configure(project, local, mavenExtension, createBintrayPublications())
-        createShperPublishTask("publishBintray", project.tasks.bintrayUpload)
-    }
-
-    private List<String> createBintrayPublications() {
-        List<String> publicationList = []
-        if (!project.plugins.hasPlugin('com.android.library')) {
-            publicationList.add('bintray')
-
-            return publicationList
-        }
-
-        if (flavors.isEmpty()) {
-            publicationList.add('bintrayRelease')
-
-            return publicationList
-        }
-
-        flavors.each { value ->
-            publicationList.add('bintray' + value + 'Release')
-        }
-        
-        return publicationList
-    }
-
     private void attachArtifacts(TKMavenExtension mavenExtension,
                                  Artifactable anInterface,
                                  String namePrefix,
@@ -138,7 +108,7 @@ class TKMavenPlugin extends BasePlugin {
                 String name = namePrefix + StringUtils.toUpperCase(variant.name, 1)
 
                 String flavorName = variant.flavorName
-                TKMavenFlavorExtension flavorExtension = flavorExtensionMap.get(flavorName)
+                TKFlavorExtension flavorExtension = flavorExtensionMap.get(flavorName)
 
                 if (StringUtils.isNotNullAndNotEmpty(flavorName) &&
                         !flavors.contains(StringUtils.toUpperCase(flavorName, 1))) {
@@ -148,9 +118,7 @@ class TKMavenPlugin extends BasePlugin {
                 MavenPublication publication = createPublication(isSnapshot, name, mavenExtension, flavorExtension)
                 new AndroidAttachments(name, project, variant, anInterface).attachTo(publication)
 
-                if (namePrefix != "bintray") {
-                    createShperPublishTaskByName(name, isSnapshot)
-                }
+                createShperPublishTaskByName(name, isSnapshot)
             }
         }
 
@@ -158,16 +126,14 @@ class TKMavenPlugin extends BasePlugin {
             MavenPublication publication = createPublication(isSnapshot, namePrefix, mavenExtension, null)
             new JavaAttachments(namePrefix, project, anInterface).attachTo(publication)
 
-            if (namePrefix != "bintray") {
-                createShperPublishTaskByName(namePrefix, isSnapshot)
-            }
+            createShperPublishTaskByName(namePrefix, isSnapshot)
         }
     }
 
     private MavenPublication createPublication(boolean isSnapshot,
                                                String name,
                                                TKMavenExtension extension,
-                                               TKMavenFlavorExtension flavorExtension) {
+                                               TKFlavorExtension flavorExtension) {
 
         String groupId = extension.groupId
         String artifactId = extension.artifactId
@@ -206,11 +172,78 @@ class TKMavenPlugin extends BasePlugin {
             publication.groupId = groupId
             publication.artifactId = artifactId
             publication.version = version
+
+            applyMavenPom(publication)
+
         } as MavenPublication
     }
 
+    private void applyMavenPom(MavenPublication publication) {
+        if (tkMavenExtension.pom != null) {
+            publication.pom({ MavenPom pom ->
+                if (tkMavenExtension.pom.name != null) {
+                    pom.name.set(tkMavenExtension.pom.name)
+                }
+                if (tkMavenExtension.pom.description != null) {
+                    pom.description.set(tkMavenExtension.pom.description)
+                }
+                if (tkMavenExtension.pom.url != null) {
+                    pom.url.set(tkMavenExtension.pom.url)
+                }
+                if (CollectionUtils.isNotNullAndNotEmpty(tkMavenExtension.pom.licenses)) {
+                    pom.licenses({ MavenPomLicenseSpec licenseSpec ->
+                        for (license in tkMavenExtension.pom.licenses) {
+                            licenseSpec.license({
+                                if (license.name) {
+                                    it.name.set(license.name)
+                                }
+                                if (license.url) {
+                                    it.url.set(license.url)
+                                }
+                                if (license.distribution) {
+                                    it.distribution.set(license.distribution)
+                                }
+                            })
+                        }
+                    })
+                }
+
+                if (tkMavenExtension.pom.developers) {
+                    pom.developers({MavenPomDeveloperSpec developerSpec->
+                        for (developer in tkMavenExtension.pom.developers) {
+                            developerSpec.developer({
+                                if (developer.id) {
+                                    it.id.set(developer.id)
+                                }
+                                if (developer.name) {
+                                    it.name.set(developer.name)
+                                }
+                                if (developer.email) {
+                                    it.email.set(developer.email)
+                                }
+                            })
+                        }
+                    })
+                }
+                if (tkMavenExtension.pom.scm) {
+                    pom.scm({ MavenPomScm scm ->
+                        if (tkMavenExtension.pom.scm.connection) {
+                            scm.connection.set(tkMavenExtension.pom.scm.connection)
+                        }
+                        if (tkMavenExtension.pom.scm.developerConnection) {
+                            scm.developerConnection.set(tkMavenExtension.pom.scm.developerConnection)
+                        }
+                        if (tkMavenExtension.pom.scm.url) {
+                            scm.url.set(tkMavenExtension.pom.scm.url)
+                        }
+                    })
+                }
+            })
+        }
+    }
+
     private void createRepository(String alias,
-                                  TKMavenRepositoryExtension extension) {
+                                  TKRepositoryExtension extension) {
 
         if (StringUtils.isNullOrEmpty(extension.url)) {
             return
@@ -229,7 +262,7 @@ class TKMavenPlugin extends BasePlugin {
         }
     }
 
-    private String getMavenUserName(TKMavenRepositoryExtension extension) {
+    private String getMavenUserName(TKRepositoryExtension extension) {
         // 获取配置优先级为：命令行，其次 extension，再 local.properties，再 ~/.gradle/gradle.properties
         if (project.hasProperty(KEY_USER_NAME)) {
             return project.property(KEY_USER_NAME)
@@ -250,7 +283,7 @@ class TKMavenPlugin extends BasePlugin {
         return null
     }
 
-    private String getMavenPassword(TKMavenRepositoryExtension extension) {
+    private String getMavenPassword(TKRepositoryExtension extension) {
         // 获取配置优先级为：命令行，其次 extension，再 local.properties，再 ~/.gradle/gradle.properties
         if (project.hasProperty(KEY_PASSWORD)) {
             return project.property(KEY_PASSWORD)

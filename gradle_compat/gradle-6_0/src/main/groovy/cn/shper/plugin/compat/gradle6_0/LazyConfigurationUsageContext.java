@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.shper.plugin.compat.gradle_6_0;
+package cn.shper.plugin.compat.gradle6_0;
 
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ConfigurationContainer;

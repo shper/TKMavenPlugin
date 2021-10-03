@@ -1,2 +1,3 @@
-include ':demo_app_lib', ':demo_java_lib'
+include ':demo_app_lib'
+//include ':demo_java_lib'
 include ':gradle_compat', ':plugin_core' , ':plugin'

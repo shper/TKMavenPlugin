@@ -6,7 +6,7 @@ import cn.shper.plugin.maven.model.ability.Artifactable
  * Author: shper
  * Version: V0.1 2019-07-10
  */
-class TKMavenRepositoryExtension extends Artifactable {
+class TKRepositoryExtension extends Artifactable {
 
     String url
 

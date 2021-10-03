@@ -18,24 +18,25 @@ ext {
     artifactId = "core"
 }
 
-apply plugin: 'tk-maven'
-tkmaven {
-    groupId = project.groupId
-    artifactId = project.artifactId
-    version = project.extVersion
-
-    repository {
-        url = "./../.repo"
-
-        sourcesJar = true
-        javadocJar = true
-    }
-
-    snapshotRepository {
-        url = "./../.repo-snapshot"
-
-        sourcesJar = true
-        javadocJar = true
-    }
-
-}
+apply from: '../local_script/uploadArchives.gradle'
+//apply plugin: 'tk-maven'
+//tkmaven {
+//    groupId = project.groupId
+//    artifactId = project.artifactId
+//    version = project.extVersion
+//
+//    repository {
+//        url = "./../.repo"
+//
+//        sourcesJar = true
+//        javadocJar = true
+//    }
+//
+//    snapshotRepository {
+//        url = "./../.repo-snapshot"
+//
+//        sourcesJar = true
+//        javadocJar = true
+//    }
+//
+//}

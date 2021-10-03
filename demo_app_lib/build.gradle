@@ -25,12 +25,12 @@ android {
         }
     }
 
-    productFlavors{
-        flavor1 {
-        }
-        flavor2 {
-        }
-    }
+//    productFlavors {
+//        flavor1 {
+//        }
+//        flavor2 {
+//        }
+//    }
 
 }
 
@@ -46,7 +46,7 @@ dependencies {
 }
 
 ext {
-    extVersion = "1.8.0"
+    extVersion = "1.0.0"
     groupId = "cn.shper.demo"
     artifactId = "app_lib"
 }
@@ -57,10 +57,8 @@ tkmaven {
     artifactId = project.artifactId
     version = project.extVersion
 
-//    debug = true
-
     flavors {
-        flavor1 {
+        flavorA {
 //            groupId = "cn.shper.demo.flavor1"
 //            artifactId = "app_lib-flavor1"
 //            version = "1.0.0-flavor1"
@@ -68,7 +66,7 @@ tkmaven {
             artifactIdSuffix = "-flavor1"
             versionSuffix = "-flavor1"
         }
-        flavor2 {
+        flavorB {
 //            artifactIdSuffix = "-flavor2"
             versionSuffix = "-flavor2"
         }
@@ -88,16 +86,39 @@ tkmaven {
         javadocJar = true
     }
 
-    bintray {
-        repo = "maven"
-        userOrg = "shper"
-        name = "demo"
-        desc = 'The demo lib for Gradle'
-        websiteUrl = "https://www.shper.cn"
-        vcsUrl = "https://www.shper.cn"
-
-        sourcesJar = true
-        javadocJar = true
+    pom {
+        name = project.artifactId
+        description = "Simple and powerful logger for android"
+        url = "https://github.com/shper/TKLogger-Android"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "repo"
+            }
+            license {
+                name = "1"
+                url = "1"
+                distribution = "1"
+            }
+        }
+        developers {
+            developer {
+                id = "me@shper.cn"
+                name = "shper"
+                email = "me@shper.cn"
+            }
+            developer {
+                id = "1"
+                name = "1"
+                email = "1"
+            }
+        }
+        scm {
+            connection = "scm:git:github.com/shper/TKLogger-Android"
+            developerConnection = "scm:git:ssh://github.com/shper/TKLogger-Android"
+            //分支地址：
+            url = "https://github.com/shper/TKLogger-Android/tree/master"
+        }
     }
-
 }

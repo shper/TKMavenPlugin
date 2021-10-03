@@ -10,4 +10,6 @@ abstract class Artifactable {
 
     boolean javadocJar = false
 
+    boolean authable = true
+
 }

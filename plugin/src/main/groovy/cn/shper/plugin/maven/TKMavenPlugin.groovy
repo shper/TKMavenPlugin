@@ -21,6 +21,7 @@ import org.gradle.api.publish.maven.MavenPomDeveloperSpec
 import org.gradle.api.publish.maven.MavenPomLicenseSpec
 import org.gradle.api.publish.maven.MavenPomScm
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.plugins.signing.SigningExtension
 
 /**
  * Author: shper
@@ -65,10 +66,12 @@ class TKMavenPlugin extends BasePlugin {
         project.afterEvaluate {
             tkMavenExtension.validate()
 
-            createPublishing(tkMavenExtension)
+            createPublishing()
+            createSigning()
         }
 
         project.apply([plugin: 'maven-publish'])
+        project.apply([plugin: 'signing'])
     }
 
     private void createLocalProperties() {
@@ -76,32 +79,34 @@ class TKMavenPlugin extends BasePlugin {
         // 如果文件不存在，不进行读取
         if (project.rootProject.file('local.properties').exists()) {
             local.load(project.rootProject.file('local.properties').newDataInputStream())
+            local.each { name, value ->
+                project.extensions.extraProperties.set(name, value)
+            }
         }
     }
 
-    private void createPublishing(TKMavenExtension mavenExtension) {
+    private void createPublishing() {
         project.publishing {
         }
 
-        if (mavenExtension.repository && StringUtils.isNotNullAndNotEmpty(mavenExtension.repository.url)) {
-            createRepository("", mavenExtension.repository)
-            attachArtifacts(mavenExtension, mavenExtension.repository, "maven", false)
+        if (tkMavenExtension.repository && StringUtils.isNotNullAndNotEmpty(tkMavenExtension.repository.url)) {
+            createRepository("", tkMavenExtension.repository)
+            attachArtifacts( tkMavenExtension.repository, "maven", false)
         }
 
-        if (mavenExtension.snapshotRepository && StringUtils.isNotNullAndNotEmpty(mavenExtension.snapshotRepository.url)) {
-            createRepository("snapshot", mavenExtension.snapshotRepository)
-            attachArtifacts(mavenExtension, mavenExtension.snapshotRepository, "snapshot", true)
+        if (tkMavenExtension.snapshotRepository && StringUtils.isNotNullAndNotEmpty(tkMavenExtension.snapshotRepository.url)) {
+            createRepository("snapshot", tkMavenExtension.snapshotRepository)
+            attachArtifacts(tkMavenExtension.snapshotRepository, "snapshot", true)
         }
     }
 
-    private void attachArtifacts(TKMavenExtension mavenExtension,
-                                 Artifactable anInterface,
+    private void attachArtifacts(Artifactable anInterface,
                                  String namePrefix,
                                  boolean isSnapshot) {
 
         project.plugins.withId("com.android.library") {
             project.android.libraryVariants.all { LibraryVariant variant ->
-                if (!mavenExtension.debug && variant.buildType.debuggable) {
+                if (!tkMavenExtension.debug && variant.buildType.debuggable) {
                     return
                 }
 
@@ -115,7 +120,7 @@ class TKMavenPlugin extends BasePlugin {
                     flavors.add(StringUtils.toUpperCase(flavorName, 1))
                 }
 
-                MavenPublication publication = createPublication(isSnapshot, name, mavenExtension, flavorExtension)
+                MavenPublication publication = createPublication(isSnapshot, name, flavorExtension)
                 new AndroidAttachments(name, project, variant, anInterface).attachTo(publication)
 
                 createShperPublishTaskByName(name, isSnapshot)
@@ -123,7 +128,7 @@ class TKMavenPlugin extends BasePlugin {
         }
 
         project.plugins.withId("java") {
-            MavenPublication publication = createPublication(isSnapshot, namePrefix, mavenExtension, null)
+            MavenPublication publication = createPublication(isSnapshot, namePrefix, null)
             new JavaAttachments(namePrefix, project, anInterface).attachTo(publication)
 
             createShperPublishTaskByName(namePrefix, isSnapshot)
@@ -132,13 +137,12 @@ class TKMavenPlugin extends BasePlugin {
 
     private MavenPublication createPublication(boolean isSnapshot,
                                                String name,
-                                               TKMavenExtension extension,
                                                TKFlavorExtension flavorExtension) {
 
-        String groupId = extension.groupId
-        String artifactId = extension.artifactId
+        String groupId = tkMavenExtension.groupId
+        String artifactId = tkMavenExtension.artifactId
 
-        String version = extension.version
+        String version = tkMavenExtension.version
 
         if (flavorExtension != null) {
             if (StringUtils.isNotNullAndNotEmpty(flavorExtension.groupIdSuffix)) {
@@ -253,12 +257,21 @@ class TKMavenPlugin extends BasePlugin {
             name = alias
             url = extension.url
 
-            if (getMavenUserName(extension) != null && getMavenPassword(extension) != null) {
+            if (extension.authable && getMavenUserName(extension) != null && getMavenPassword(extension) != null) {
                 credentials {
                     username = getMavenUserName(extension)
                     password = getMavenPassword(extension)
                 }
             }
+        }
+    }
+
+    private void createSigning() {
+        if (tkMavenExtension.signing) {
+            project.signing {
+            }
+
+            project.extensions.getByType(SigningExtension.class).sign(project.extensions.getByType(PublishingExtension.class).publications)
         }
     }
 

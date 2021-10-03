@@ -13,15 +13,20 @@ import org.gradle.api.publish.maven.internal.publication.*
  */
 class TKMavenExtension {
 
-    String groupId
-    String artifactId
-    String version
-
     Boolean debug = false
+
+    Boolean signing = false
+
+    String groupId
+
+    String artifactId
+
+    String version
 
     final NamedDomainObjectContainer<TKFlavorExtension> flavors
 
     TKRepositoryExtension repository
+
     TKRepositoryExtension snapshotRepository
 
     DefaultMavenPom pom

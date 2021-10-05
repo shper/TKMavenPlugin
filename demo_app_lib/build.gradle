@@ -100,22 +100,12 @@ tkmaven {
                 url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
                 distribution = "repo"
             }
-            license {
-                name = "1"
-                url = "1"
-                distribution = "1"
-            }
         }
         developers {
             developer {
                 id = "me@shper.cn"
                 name = "shper"
                 email = "me@shper.cn"
-            }
-            developer {
-                id = "1"
-                name = "1"
-                email = "1"
             }
         }
         scm {

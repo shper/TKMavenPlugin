@@ -9,7 +9,7 @@ dependencies {
     implementation gradleApi()
     implementation localGroovy()
 
-    implementation 'com.android.tools.build:gradle:4.2.0'
+    implementation 'com.android.tools.build:gradle:4.0.0'
 }
 
 ext {
@@ -18,25 +18,52 @@ ext {
     artifactId = "core"
 }
 
-apply from: '../local_script/uploadArchives.gradle'
-//apply plugin: 'tk-maven'
-//tkmaven {
-//    groupId = project.groupId
-//    artifactId = project.artifactId
-//    version = project.extVersion
-//
-//    repository {
-//        url = "./../.repo"
-//
-//        sourcesJar = true
-//        javadocJar = true
-//    }
-//
-//    snapshotRepository {
-//        url = "./../.repo-snapshot"
-//
-//        sourcesJar = true
-//        javadocJar = true
-//    }
-//
-//}
+//apply from: '../local_script/uploadArchives.gradle'
+apply plugin: 'tk-maven'
+tkmaven {
+
+    signing = true
+
+    groupId = project.groupId
+    artifactId = project.artifactId
+    version = project.extVersion
+
+    repository {
+        url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+
+        sourcesJar = true
+        javadocJar = true
+    }
+
+    snapshotRepository {
+        url = "./../.repo-snapshot"
+
+        authable = false
+        sourcesJar = true
+        javadocJar = true
+    }
+
+    pom {
+        name = project.artifactId
+        description = "Shper TK Plugin Core for Gradle"
+        url = "https://github.com/shper/TKMavenPlugin"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+        developers {
+            developer {
+                id = "me@shper.cn"
+                name = "shper"
+                email = "me@shper.cn"
+            }
+        }
+        scm {
+            connection = "scm:git:github.com/shper/TKMavenPlugin"
+            developerConnection = "scm:git:ssh://github.com/shper/TKMavenPlugin"
+            url = "https://github.com/shper/TKMavenPlugin/tree/master"
+        }
+    }
+}

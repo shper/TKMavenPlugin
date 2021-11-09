@@ -17,6 +17,8 @@ class TKMavenExtension {
 
     Boolean signing = false
 
+    Boolean gradleModuleMetadata = false
+
     String groupId
 
     String artifactId
@@ -76,8 +78,7 @@ class TKMavenExtension {
         }
 
         if (!(repository && StringUtils.isNotNullAndNotEmpty(repository.url)) &&
-                !(snapshotRepository && StringUtils.isNotNullAndNotEmpty(snapshotRepository.url)) &&
-                !(bintray && bintray.validate())) {
+                !(snapshotRepository && StringUtils.isNotNullAndNotEmpty(snapshotRepository.url))) {
             extensionError += "Missing repository. "
         }
 

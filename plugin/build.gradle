@@ -4,6 +4,8 @@ apply from: 'compat.gradle'
 repositories {
     google()
     mavenCentral()
+    maven{ url './../.repo/' }
+    maven{ url './../.repo-snapshot/' }
 }
 
 dependencies {
@@ -12,11 +14,11 @@ dependencies {
 
     implementation 'com.android.tools.build:gradle:4.0.0'
 
-    implementation 'cn.shper.plugin:core:2.0.0'
+    implementation 'cn.shper.plugin:core:2.2.0'
 }
 
 ext {
-    extVersion = "2.1.0"
+    extVersion = "2.2.0"
     groupId = "cn.shper.plugin"
     artifactId = "tk-maven"
 }

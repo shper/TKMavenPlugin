@@ -22,6 +22,8 @@ import org.gradle.api.publish.maven.MavenPomLicenseSpec
 import org.gradle.api.publish.maven.MavenPomScm
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.plugins.signing.SigningExtension
+import org.gradle.api.publish.tasks.GenerateModuleMetadata
+import org.gradle.util.GradleVersion
 
 /**
  * Author: shper
@@ -68,6 +70,8 @@ class TKMavenPlugin extends BasePlugin {
 
             createPublishing()
             createSigning()
+
+            disableGradleModuleMetadata()
         }
 
         project.apply([plugin: 'maven-publish'])
@@ -272,6 +276,14 @@ class TKMavenPlugin extends BasePlugin {
             }
 
             project.extensions.getByType(SigningExtension.class).sign(project.extensions.getByType(PublishingExtension.class).publications)
+        }
+    }
+
+    private void disableGradleModuleMetadata() {
+        if (GradleVersion.current() >= GradleVersion.version('6.0')) {
+            project.tasks.withType(GenerateModuleMetadata) {
+                enabled = tkMavenExtension.gradleModuleMetadata
+            }
         }
     }
 

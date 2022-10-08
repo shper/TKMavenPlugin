@@ -4,8 +4,6 @@
 
 ## New version
 
-[![Download](https://api.bintray.com/packages/shper/maven/TK-Maven/images/download.svg)](https://bintray.com/shper/maven/TK-Maven)
-
 
 ## Prerequisites
 
@@ -14,9 +12,9 @@ The version of the Gradle requires to match TK-Maven's version.
 ### TK-Maven version description
 
 | TK-Maven | Support <br /> Gradle version | Support <br /> Android build tools |
-|:---:|:---:|:---:|
-| [![Download](https://api.bintray.com/packages/shper/maven/TK-Maven/images/download.svg)](https://bintray.com/shper/maven/TK-Maven) | >= 6.0.0 | >= 4.0.0 |
-| [![Download](https://api.bintray.com/packages/shper/maven/TK-Maven/images/download.svg?version=1.0.1)](https://bintray.com/shper/maven/TK-Maven/1.0.1/link) | <= 5.6.4 | <= 3.6.3 |
+|:--------:|:---:|:---:|
+|  2.0.0+  | >= 6.0.0 | >= 4.0.0 |
+|  1.0.0+  | <= 5.6.4 | <= 3.6.3 |
 
 
 ## Getting Started

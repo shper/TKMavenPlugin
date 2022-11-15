@@ -25,6 +25,10 @@ android {
         }
     }
 
+//    sourceSets.main {
+//            javaSrcs += "src/main/koltin"
+//    }
+
 //    productFlavors {
 //        flavor1 {
 //        }

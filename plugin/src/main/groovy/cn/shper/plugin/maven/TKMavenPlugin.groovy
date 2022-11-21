@@ -6,11 +6,11 @@ import cn.shper.plugin.core.base.BasePlugin
 import cn.shper.plugin.maven.attachment.AndroidAttachments
 import cn.shper.plugin.maven.attachment.JavaAttachments
 
-import cn.shper.plugin.maven.model.TKMavenExtension
-import cn.shper.plugin.maven.model.TKFlavorExtension
-import cn.shper.plugin.maven.model.TKFlavorFactory
-import cn.shper.plugin.maven.model.TKRepositoryExtension
-import cn.shper.plugin.maven.model.ability.Artifactable
+import model.TKMavenExtension
+import model.TKFlavorExtension
+import model.TKFlavorFactory
+import model.TKRepositoryExtension
+import model.ability.Artifactable
 import com.android.build.gradle.api.LibraryVariant
 import org.gradle.api.Project
 import org.gradle.api.Task

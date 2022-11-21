@@ -1,6 +1,7 @@
-package cn.shper.plugin.maven.model
+package model
 
-import cn.shper.plugin.maven.model.ability.Artifactable
+
+import model.ability.Artifactable
 
 /**
  * Author: shper

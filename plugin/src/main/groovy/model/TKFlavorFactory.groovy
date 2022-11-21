@@ -1,4 +1,4 @@
-package cn.shper.plugin.maven.model
+package model
 
 import org.gradle.api.NamedDomainObjectFactory
 import org.gradle.internal.reflect.Instantiator

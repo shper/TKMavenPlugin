@@ -1,6 +1,6 @@
 package cn.shper.plugin.maven.attachment
 
-import cn.shper.plugin.maven.model.ability.Artifactable
+import model.ability.Artifactable
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.component.SoftwareComponent

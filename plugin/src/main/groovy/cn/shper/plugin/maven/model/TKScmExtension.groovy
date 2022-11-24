@@ -1,4 +1,4 @@
-package model
+package cn.shper.plugin.maven.model
 
 /**
  * Author: shper

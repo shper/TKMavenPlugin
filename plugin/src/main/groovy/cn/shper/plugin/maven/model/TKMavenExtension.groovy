@@ -1,4 +1,4 @@
-package model
+package cn.shper.plugin.maven.model
 
 import cn.shper.plugin.core.util.StringUtils
 import org.gradle.api.Action

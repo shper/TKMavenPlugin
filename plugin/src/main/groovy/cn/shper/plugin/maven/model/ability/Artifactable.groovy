@@ -1,4 +1,4 @@
-package model.ability
+package cn.shper.plugin.maven.model.ability
 
 /**
  * Author: shper

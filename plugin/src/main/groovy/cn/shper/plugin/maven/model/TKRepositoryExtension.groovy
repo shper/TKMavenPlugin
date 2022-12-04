@@ -1,12 +1,9 @@
 package cn.shper.plugin.maven.model
-
-import cn.shper.plugin.maven.model.ability.Artifactable
-
 /**
  * Author: shper
  * Version: V0.1 2019-07-10
  */
-class TKRepositoryExtension extends Artifactable {
+class TKRepositoryExtension extends cn.shper.plugin.maven.model.ability.Artifactable {
 
     String url
 

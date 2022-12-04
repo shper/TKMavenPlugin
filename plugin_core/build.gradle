@@ -13,7 +13,7 @@ dependencies {
 }
 
 ext {
-    extVersion = "2.2.0"
+    extVersion = "2.2.1"
     groupId = "cn.shper.plugin"
     artifactId = "core"
 }

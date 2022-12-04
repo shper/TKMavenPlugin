@@ -14,11 +14,11 @@ dependencies {
 
     implementation 'com.android.tools.build:gradle:4.0.0'
 
-    implementation 'cn.shper.plugin:core:2.2.0'
+    implementation 'cn.shper.plugin:core:2.2.1'
 }
 
 ext {
-    extVersion = "2.2.0"
+    extVersion = "2.2.1"
     groupId = "cn.shper.plugin"
     artifactId = "tk-maven"
 }

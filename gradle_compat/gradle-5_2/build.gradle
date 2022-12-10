@@ -1,6 +1,0 @@
-apply from: '../common.gradle'
-
-wrapper {
-    distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = '5.2'
-}

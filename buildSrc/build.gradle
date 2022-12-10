@@ -1,0 +1,76 @@
+apply plugin: 'groovy'
+//apply from: 'compat.gradle'
+//apply plugin: 'kotlin'
+//apply plugin: 'java-gradle-plugin'
+
+repositories {
+    google()
+    mavenCentral()
+    maven{ url './../.repo/' }
+    maven{ url './../.repo-snapshot/' }
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+
+    implementation 'com.android.tools.build:gradle:7.0.0'
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10"
+    implementation 'cn.shper.plugin:core:2.2.1'
+}
+
+ext {
+    extVersion = "3.0.0"
+    groupId = "cn.shper.plugin"
+    artifactId = "tk-maven"
+}
+
+apply from: '../local_script/publishing.gradle'
+//apply plugin: 'tk-maven'
+//tkmaven {
+//
+//    signing = true
+//
+//    groupId = project.groupId
+//    artifactId = project.artifactId
+//    version = project.extVersion
+//
+//    repository {
+//        url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+//
+//        sourcesJar = true
+//        javadocJar = true
+//    }
+//
+//    snapshotRepository {
+//        url = "./../.repo-snapshot"
+//
+//        authable = false
+//        sourcesJar = true
+//        javadocJar = true
+//    }
+//
+//    pom {
+//        name = project.artifactId
+//        description = "Shper TK Maven for Gradle"
+//        url = "https://github.com/shper/TKMavenPlugin"
+//        licenses {
+//            license {
+//                name = "The Apache License, Version 2.0"
+//                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+//            }
+//        }
+//        developers {
+//            developer {
+//                id = "me@shper.cn"
+//                name = "shper"
+//                email = "me@shper.cn"
+//            }
+//        }
+//        scm {
+//            connection = "scm:git:github.com/shper/TKMavenPlugin"
+//            developerConnection = "scm:git:ssh://github.com/shper/TKMavenPlugin"
+//            url = "https://github.com/shper/TKMavenPlugin/tree/master"
+//        }
+//    }
+//}

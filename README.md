@@ -30,7 +30,7 @@ buildscript {
 
     dependencies {
         // TK-Maven 工具
-        classpath 'cn.shper.plugin:tk-maven:<last_version>'
+        classpath 'cn.shper.plugin:tk-maven:2.2.1'
     }
 }
 ```

@@ -1,23 +1,30 @@
 apply plugin: 'maven-publish'
 
-publishing {
-  publications {
-    Archives(MavenPublication) {
-      from components.java
+task generateSourcesJar(type: Jar) {
+  from sourceSets.main.allSource
+  classifier "sources"
+}
 
-      groupId = project.groupId
-      artifactId = project.artifactId
-      version = project.extVersion
+afterEvaluate {
+  publishing {
+    publications {
+      maven(MavenPublication) {
+        groupId = project.groupId
+        artifactId = project.artifactId
+        version = project.extVersion
+
+        // 编译 jar
+        from components.java
+        // 编译 SourceJar
+        artifact generateSourcesJar
+      }
     }
-  }
-  repositories {
-    maven {
-      name = "repo"
-      url = './../.repo'
-    }
-    maven {
-      name = "snapshot"
-      url = './../.repo-snapshot'
+
+    repositories {
+      maven {
+        name = "repo"
+        url = './../.repo'
+      }
     }
   }
 }

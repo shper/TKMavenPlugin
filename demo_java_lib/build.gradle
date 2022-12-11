@@ -13,24 +13,26 @@ ext {
     artifactId = "java_lib"
 }
 
-//apply plugin: 'tk-maven'
-//tkmaven {
-//    groupId = project.groupId
-//    artifactId = project.artifactId
-//    version = project.extVersion
-//
-//    repository {
-//        url = "./../.repo"
-//
-//        sourcesJar = true
-//        javadocJar = true
-//    }
-//
-//    snapshotRepository {
-//        url = "./../.repo-snapshot"
-//
-//        sourcesJar = true
-//        javadocJar = true
-//    }
-//
-//}
+apply plugin: 'tk-maven'
+tkmaven {
+    groupId = project.groupId
+    artifactId = project.artifactId
+    version = project.extVersion
+
+    repository {
+        url = "./../.repo"
+
+        authable = false
+        sourcesJar = true
+        javadocJar = true
+    }
+
+    snapshotRepository {
+        url = "./../.repo-snapshot"
+
+        authable = false
+        sourcesJar = true
+        javadocJar = true
+    }
+
+}

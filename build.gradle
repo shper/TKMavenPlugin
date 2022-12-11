@@ -14,11 +14,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-
-        // TK-Maven 工具
-//        classpath 'cn.shper.plugin:tk-maven:2.2.1'
     }
 
     configurations.all {

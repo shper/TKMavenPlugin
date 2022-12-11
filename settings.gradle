@@ -1,6 +1,5 @@
 include ':demo_app_lib'
-//include ':demo_java_lib'
+include ':demo_java_lib'
 
 include ':plugin_core'
-//include ':gradle_compat'
-//include ':plugin'
+include ':plugin'

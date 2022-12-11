@@ -1,9 +1,12 @@
 package cn.shper.plugin.maven.attachment
 
+import cn.shper.plugin.core.util.Logger
 import cn.shper.plugin.maven.model.ability.Artifactable
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.component.SoftwareComponent
+import org.gradle.api.file.FileTree
+import org.gradle.api.tasks.compile.GroovyCompile
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.javadoc.Javadoc
 
@@ -31,7 +34,16 @@ class JavaAttachments extends MavenAttachments {
 
     private static Task javaSourcesJarTask(Project project, String name) {
         JavaCompile javaCompile = project.compileJava
-        return sourcesJarTask(project, name, null, javaCompile.source)
+        GroovyCompile groovyCompile = project.compileGroovy
+
+        def fileTreeList = new ArrayList<>()
+        fileTreeList.add(javaCompile.source)
+
+        if (groovyCompile != null) {
+            fileTreeList.add(groovyCompile.source)
+        }
+
+        return sourcesJarTask(project, name, null, fileTreeList.toArray())
     }
 
     private static Task javaJavadocsJarTask(Project project, String name) {

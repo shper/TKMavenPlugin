@@ -1,5 +1,4 @@
 apply plugin: 'groovy'
-apply from: 'compat.gradle'
 
 repositories {
     google()
@@ -8,22 +7,31 @@ repositories {
     maven{ url './../.repo-snapshot/' }
 }
 
+sourceSets {
+    main {
+        groovy {
+            srcDir './../buildSrc/src/main/groovy'
+        }
+        resources {
+            srcDir './../buildSrc/src/main/resources'
+        }
+    }
+}
+
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
 
-    implementation 'com.android.tools.build:gradle:4.0.0'
-
+    implementation 'com.android.tools.build:gradle:7.0.0'
     implementation 'cn.shper.plugin:core:2.2.1'
 }
 
 ext {
-    extVersion = "2.2.1"
+    extVersion = "3.0.0"
     groupId = "cn.shper.plugin"
     artifactId = "tk-maven"
 }
 
-//apply from: '../local_script/uploadArchives.gradle'
 apply plugin: 'tk-maven'
 tkmaven {
 

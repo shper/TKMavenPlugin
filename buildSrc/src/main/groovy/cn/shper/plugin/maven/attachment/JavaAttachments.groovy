@@ -1,11 +1,10 @@
 package cn.shper.plugin.maven.attachment
 
-import cn.shper.plugin.core.util.Logger
 import cn.shper.plugin.maven.model.ability.Artifactable
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.component.SoftwareComponent
-import org.gradle.api.file.FileTree
+import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.compile.GroovyCompile
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.javadoc.Javadoc
@@ -16,8 +15,12 @@ import org.gradle.api.tasks.javadoc.Javadoc
  */
 class JavaAttachments extends MavenAttachments {
 
+    protected SoftwareComponent softwareComponent
+
     JavaAttachments(String name, Project project, Artifactable artifactable) {
-        super(javaComponentFrom(project))
+        super(project)
+
+        this.softwareComponent = javaComponentFrom()
 
         if (artifactable.sourcesJar) {
             addArtifactSources(javaSourcesJarTask(project, name))
@@ -28,19 +31,27 @@ class JavaAttachments extends MavenAttachments {
         }
     }
 
-    private static SoftwareComponent javaComponentFrom(Project project) {
+    @Override
+    void attachTo(MavenPublication publication) {
+        super.attachTo(publication)
+
+        publication.from softwareComponent
+    }
+
+    private SoftwareComponent javaComponentFrom() {
         return project.components.getByName('java')
     }
 
     private static Task javaSourcesJarTask(Project project, String name) {
-        JavaCompile javaCompile = project.compileJava
-        GroovyCompile groovyCompile = project.compileGroovy
-
         def fileTreeList = new ArrayList<>()
+
+        JavaCompile javaCompile = project.compileJava
         fileTreeList.add(javaCompile.source)
 
-        if (groovyCompile != null) {
+        try {
+            GroovyCompile groovyCompile = project.compileGroovy
             fileTreeList.add(groovyCompile.source)
+        } catch (Exception ignore) {
         }
 
         return sourcesJarTask(project, name, null, fileTreeList.toArray())

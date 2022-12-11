@@ -341,10 +341,10 @@ class TKMavenPlugin extends BasePlugin {
         createShperPublishTask(taskName, project.tasks.getByName(taskName + nameSuffix))
     }
 
-    private void createShperPublishTask(String name, Object object) {
+    private void createShperPublishTask(String name, Object... dependsOnTasks) {
         project.tasks.create(name) { Task task ->
             task.setGroup(KEY_EXTENSION_NAME)
-            task.dependsOn(object)
+            task.dependsOn(dependsOnTasks)
         }
     }
 

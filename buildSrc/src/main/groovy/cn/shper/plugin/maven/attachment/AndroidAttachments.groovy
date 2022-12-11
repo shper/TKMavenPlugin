@@ -1,10 +1,11 @@
 package cn.shper.plugin.maven.attachment
 
+import cn.shper.plugin.core.util.CollectionUtils
 import cn.shper.plugin.maven.model.ability.Artifactable
 import com.android.build.gradle.api.LibraryVariant
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.component.SoftwareComponent
+import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.javadoc.Javadoc
 
 /**
@@ -14,7 +15,7 @@ import org.gradle.api.tasks.javadoc.Javadoc
 class AndroidAttachments extends MavenAttachments {
 
     AndroidAttachments(String name, Project project, LibraryVariant variant, Artifactable artifactable) {
-        super(androidComponentFrom(project))
+        super(project)
 
         if (artifactable.sourcesJar) {
             addArtifactSources(androidSourcesJarTask(project, name, variant))
@@ -23,20 +24,18 @@ class AndroidAttachments extends MavenAttachments {
         if (artifactable.javadocJar) {
             addArtifactSources(androidJavadocsJarTask(project, name, variant))
         }
-
-        addArtifactSources(androidArchivePath(variant))
     }
 
-    private static SoftwareComponent androidComponentFrom(Project project) {
-//        project.components.forEach{
-//            Logger.d(it.name)
-//        }
-//
-//        D/ShperPlugin: all
-//        D/ShperPlugin: debug
-//        D/ShperPlugin: release
+    void attachTo(MavenPublication publication) {
+        if (CollectionUtils.isNotNullAndNotEmpty(allArtifactSources)) {
+            allArtifactSources.each {
+                publication.artifact it
+            }
+        }
 
-        return project.components.getByName('release')
+        project.afterEvaluate {
+            publication.artifact(project.tasks.getByName("bundleReleaseAar"))
+        }
     }
 
     private static Task androidSourcesJarTask(Project project, String publicationName, LibraryVariant variant) {
@@ -58,10 +57,6 @@ class AndroidAttachments extends MavenAttachments {
         } as Javadoc
 
         return javadocsJarTask(project, publicationName, javadoc,null)
-    }
-
-    private static def androidArchivePath(LibraryVariant variant) {
-        return variant.packageLibraryProvider.get()
     }
 
 }

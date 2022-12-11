@@ -14,11 +14,11 @@ import org.gradle.api.tasks.javadoc.Javadoc
  */
 class MavenAttachments {
 
-    private final SoftwareComponent softwareComponent
-    private List<Object> allArtifactSources
+    protected Project project
+    protected List<Object> allArtifactSources
 
-    MavenAttachments(SoftwareComponent softwareComponent) {
-        this.softwareComponent = softwareComponent
+    MavenAttachments(Project project) {
+        this.project = project
     }
 
     void addArtifactSources(Object artifactSource) {
@@ -28,14 +28,12 @@ class MavenAttachments {
         this.allArtifactSources.add(artifactSource)
     }
 
-    final void attachTo(MavenPublication publication) {
+    void attachTo(MavenPublication publication) {
         if (CollectionUtils.isNotNullAndNotEmpty(allArtifactSources)) {
             allArtifactSources.each {
                 publication.artifact it
             }
         }
-
-        publication.from softwareComponent
     }
 
     protected static Task sourcesJarTask(Project project, String publicationName, List<String> excludes, def ... sourcePaths) {

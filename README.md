@@ -12,9 +12,10 @@ The version of the Gradle requires to match TK-Maven's version.
 ### TK-Maven version description
 
 | TK-Maven | Support <br /> Gradle version | Support <br /> Android build tools |
-|:--------:|:---:|:---:|
-|  2.0.0+  | >= 6.0.0 | >= 4.0.0 |
-|  1.0.0+  | <= 5.6.4 | <= 3.6.3 |
+|:--------:|:-----------------------------:|:----------------------------------:|
+|  3.0.0+  |           >= 7.0.0            |              >= 7.0.0              |
+|  2.2.1+  |           >= 6.0.0            |              >= 4.0.0              |
+|  1.0.0+  |           <= 5.6.4            |              <= 3.6.3              |
 
 
 ## Getting Started
@@ -30,7 +31,7 @@ buildscript {
 
     dependencies {
         // TK-Maven 工具
-        classpath 'cn.shper.plugin:tk-maven:2.2.1'
+        classpath 'cn.shper.plugin:tk-maven:3.0.0'
     }
 }
 ```
